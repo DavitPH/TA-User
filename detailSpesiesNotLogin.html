@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Spesies - Achatina fulica</title>
+    <!-- Load Google Fonts for better typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Load Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Load Tailwind CSS for utility styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for Tailwind overrides or specific elements */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+            /* New background color */
+        }
+
+        .container {
+            max-width: 1200px;
+            /* Max width for content */
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .header {
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            /* Add consistent shadow */
+        }
+
+        .header .logo span {
+            font-weight: 700;
+            color: #2c3e50;
+            font-size: 1.5rem;
+            /* Larger font size for consistency */
+        }
+
+        /* Change login button styling to btn-primary */
+        .btn-primary {
+            background-color: #F97A00;
+            /* Orange color */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: background-color 0.2s;
+            border: none;
+            /* Ensure no default border */
+        }
+
+        .btn-primary:hover {
+            background-color: #e06c00;
+            /* Darker orange on hover */
+        }
+
+        /* Consistent search input style */
+        .search-input {
+            border: 1px solid #cbd5e0;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            width: 100%;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: #1a4a2a;
+            /* Consistent focus border color */
+        }
+
+        /* Consistent breadcrumb */
+        .breadcrumb-container {
+            background-color: white;
+            padding: 1rem;
+            /* Larger padding */
+            border-radius: 0.75rem;
+            /* Rounded corners */
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            /* Consistent shadow */
+            margin-bottom: 1.5rem;
+            /* Bottom margin */
+        }
+
+        .breadcrumb {
+            color: #6c757d;
+        }
+
+        .breadcrumb li+li::before {
+            content: ">";
+            /* Change separator to ">" */
+            padding: 0 0.5rem;
+            color: #a0aec0;
+            /* Lighter color */
+        }
+
+        .breadcrumb li a {
+            color: #4a5568;
+            /* Link text color */
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .breadcrumb li a:hover {
+            color: #1a4a2a;
+            /* Dark green hover color */
+        }
+
+        .breadcrumb li:last-child span {
+            /* Change a to span for the last item */
+            color: #1a4a2a;
+            /* Dark green for active item */
+            font-weight: 600;
+            pointer-events: none;
+        }
+
+        /* Consistent sidebar */
+        .sidebar {
+            background-color: #1a4a2a;
+            /* Dark green color */
+            color: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            overflow-y: auto;
+            /* Ensure scrollbar appears when content exceeds height */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+            /* Ensure it doesn't shrink */
+            width: 250px;
+            /* Fixed width */
+            height: calc(100vh - 8rem);
+            /* Fill viewport height, minus header and main wrapper padding */
+        }
+
+        .sidebar .nav-item-header {
+            padding: 0.5rem 0.5rem;
+            /* Consistent padding */
+            cursor: pointer;
+            border-radius: 0.5rem;
+            transition: background-color 0.2s;
+            font-weight: bold;
+            /* Default bold for main headers */
+        }
+
+        .sidebar .nav-item-header:hover {
+            background-color: #2a6a3a;
+            /* Consistent hover color */
+        }
+
+        .sidebar .nav-item-header.active {
+            background-color: #2a6a3a;
+            /* Consistent active color */
+        }
+
+        .sidebar .nav-list-item a {
+            display: block;
+            padding: 0.5rem 0.5rem;
+            /* Consistent padding */
+            color: white;
+            /* White text color */
+            transition: background-color 0.2s ease;
+            border-radius: 0.5rem;
+            /* Rounded corners */
+        }
+
+        .sidebar .nav-list-item a:hover {
+            background-color: #2a6a3a;
+            /* Consistent hover color */
+        }
+
+        .sidebar .nav-list-item.active a {
+            background-color: #2a6a3a;
+            /* Consistent active color */
+            font-weight: 600;
+        }
+
+        /* Indentation for taxonomy levels */
+        .indent-0 {
+            /* For Phylum or main categories (e.g., Protozoa) */
+            padding-left: 0.5rem;
+            font-weight: 600;
+            /* Phylum bolder */
+        }
+
+        .indent-1 {
+            /* For Supergroup/Class under Phylum (e.g., Amoebozoa, Hydrozoa, Chelicerata) */
+            padding-left: 1.5rem;
+            font-weight: normal;
+            /* Default normal, Subphylum still bold */
+        }
+
+        .indent-2 {
+            /* For Class under Subphylum (e.g., Arachnida) */
+            padding-left: 2.5rem;
+            font-weight: normal;
+        }
+
+        /* Consistent main content */
+        .main-content {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            /* Consistent rounded corners */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            /* Consistent shadow */
+            flex-grow: 1;
+            min-height: 800px;
+            /* Add minimum height to accommodate all tab content so comments don't shift */
+        }
+
+        /* Style for "Gambar" button in species-header, consistent with btn-primary */
+        .species-header .action-buttons .btn {
+            background-color: #F97A00;
+            /* Orange color */
+            color: white;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            font-weight: 600;
+            transition: background-color 0.2s;
+            border: none;
+        }
+
+        .species-header .action-buttons .btn:hover {
+            background-color: #e06c00;
+            /* Darker orange on hover */
+        }
+
+        /* Other general styles remain as before or slightly adjusted */
+        .species-header h1 {
+            color: #2c3e50;
+            font-size: 2.25rem;
+            font-weight: 700;
+        }
+
+        .species-header p {
+            color: #6c757d;
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
+        }
+
+        .species-gallery {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            align-items: flex-start;
+            /* Align items to the top to prevent stretching */
+        }
+
+        .main-image-wrapper {
+            position: relative;
+            flex-grow: 1;
+            /* Adjust main image width to not be too large */
+            flex-basis: 65%;
+            /* Take 65% of available space */
+            max-width: 65%;
+            /* Ensure it doesn't exceed 65% */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border-radius: 0.5rem;
+            background-color: transparent;
+            min-height: 220px;
+            /* Slightly reduce min height */
+            height: auto;
+            /* Allow height to adjust to content */
+            aspect-ratio: 4/3;
+            /* Add aspect ratio for consistency */
+        }
+
+        .main-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            /* Ensure image fills full container height */
+            object-fit: cover;
+            /* Change from 'contain' to 'cover' so image fills fully and no empty space */
+            border-radius: 0.5rem;
+        }
+
+        /* Remove left/right navigation buttons on main image */
+        .main-image-wrapper .nav-arrow {
+            display: none;
+        }
+
+        .thumbnail-gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            overflow-y: auto;
+            /* Enable scrolling for thumbnails */
+            max-height: 220px;
+            /* Adjust max-height to main image min-height */
+            flex-basis: 35%;
+            /* Add space for thumbnails */
+            padding-right: 0.05rem;
+            /* Reduce padding to bring scrollbar closer */
+        }
+
+        .thumbnail-gallery img {
+            width: 90px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 0.5rem;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: border-color 0.2s ease;
+        }
+
+        .thumbnail-gallery img.active {
+            border-color: #1a4a2a;
+            /* Consistent active thumbnail border */
+        }
+
+        /* Remove styling for thumb-arrow as elements will be removed */
+        .thumbnail-gallery .thumb-arrow {
+            display: none;
+        }
+
+        .species-tabs {
+            border-bottom: 1px solid #e0e0e0;
+            margin-top: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            /* Allow wrapping if too many tabs */
+            justify-content: space-between;
+            /* For better space distribution */
+        }
+
+        .species-tabs button {
+            background-color: transparent;
+            border: none;
+            padding: 0.75rem 1.0rem;
+            /* Adjust padding to be more compact */
+            cursor: pointer;
+            font-weight: 500;
+            color: #555;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            flex-grow: 1;
+            /* Let buttons grow to fill space */
+            text-align: center;
+            white-space: nowrap;
+            /* Prevent tab text from truncating */
+        }
+
+        .species-tabs button.active {
+            color: #1a4a2a;
+            /* Consistent active tab color */
+            border-bottom-color: #1a4a2a;
+        }
+
+        .tab-content {
+            padding-top: 1.5rem;
+        }
+
+        /* Style for Classification & Data Source tables */
+        .data-table-container {
+            border: 1px solid #e2e8f0;
+            /* Light gray border */
+            border-radius: 0.75rem;
+            /* Larger rounded corners */
+            overflow: hidden;
+            background-color: white;
+            /* White background */
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            /* Soft shadow */
+        }
+
+        .data-table {
+            /* Change class name for consistency */
+            width: 100%;
+            border-collapse: collapse;
+            /* margin-top: 1rem; Removed as container already has padding */
+            /* background-color: #fff; Removed as container already has background */
+            /* border-radius: 0.5rem; Removed as container already has border-radius */
+            /* overflow: hidden; Removed as container already has overflow */
+            /* box-shadow: 0 1px 3px rgba(0,0,0,0.05); Removed as container already has shadow */
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+            /* Lighter border color */
+            font-size: 0.95rem;
+        }
+
+        .data-table th {
+            background-color: #f8f8f8;
+            /* Lighter table header background */
+            font-weight: 600;
+            color: #333;
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table tr:nth-child(even) {
+            background-color: #ffffff;
+            /* Change alternating background color to white */
+        }
+
+        .data-table tr:nth-child(odd) {
+            background-color: #fcfcfc;
+            /* Change odd row background color to white */
+        }
+
+
+        .map-container {
+            width: 80%;
+            /* Reduce width to 80% of parent */
+            max-width: 700px;
+            /* Max width limit for desktop */
+            height: auto;
+            /* Set height automatically */
+            aspect-ratio: 4/3;
+            /* Set aspect ratio 4:3 to make it less stretched (more square) */
+            background-color: #f0f0f0;
+            border-radius: 0.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #888;
+            border: 1px solid #ddd;
+            overflow: hidden;
+            margin-left: auto;
+            /* Center horizontally */
+            margin-right: auto;
+            /* Center horizontally */
+        }
+
+        .map-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .comments-section h2 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Styling for readonly textarea */
+        .comment-form textarea[readonly] {
+            background-color: #f8f8f8;
+            /* A slightly different background to indicate it's not editable */
+            cursor: pointer;
+            /* Change cursor to pointer to indicate it's clickable */
+            opacity: 1;
+            /* Ensure full opacity */
+        }
+
+        /* Styling for disabled button */
+        .comment-form button:disabled {
+            background-color: #cccccc;
+            /* Gray background for disabled button */
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .comment-item {
+            background-color: #f9f9f9;
+            border: 1px solid #eee;
+            border-radius: 0.5rem;
+            display: flex;
+            /* Use flexbox for better layout */
+            align-items: flex-start;
+            /* Align items to the top */
+            padding: 1rem;
+        }
+
+        .comment-avatar {
+            width: 40px;
+            height: 40px;
+            background-color: #1a4a2a;
+            /* Dark green for avatar */
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1rem;
+            flex-shrink: 0;
+            /* Prevent avatar from shrinking */
+            margin-right: 1rem;
+            /* Space between avatar and comment content */
+        }
+
+        .comment-content {
+            flex-grow: 1;
+            /* Allow comment content to take remaining space */
+        }
+
+        .comment-header {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.25rem;
+            /* Space between header and comment body */
+        }
+
+        .comment-meta {
+            font-size: 0.875rem;
+            color: #888;
+            margin-left: 0.5rem;
+            /* Space between name and date */
+        }
+
+        .comment-body {
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .comment-actions {
+            margin-top: 0.5rem;
+            /* This div will now be empty as reply button is removed */
+        }
+
+        .btn-cancel {
+            background-color: #6c757d;
+            /* Grey color for cancel button */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: background-color 0.2s;
+            border: none;
+        }
+
+        .btn-cancel:hover {
+            background-color: #5a6268;
+            /* Darker grey on hover */
+        }
+
+        .nested-comment {
+            margin-top: 1rem;
+            margin-left: 2rem;
+            /* Indentation for reply comments */
+            border-left: 2px solid #e0e0e0;
+            /* Vertical line */
+            padding-left: 1rem;
+            /* Padding after the line */
+        }
+
+        /* Modal Overlay and Content */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        /* Responsiveness */
+        @media (max-width: 1024px) {
+            .container.header-container {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .header-right {
+                width: 100%;
+                justify-content: center;
+                margin-top: 1rem;
+                flex-direction: column;
+                /* Stack search and login vertically */
+            }
+
+            .search-input {
+                width: 100%;
+            }
+
+            .flex-1.flex.p-4.space-x-4 {
+                /* Target the main wrapper of sidebar and main content */
+                flex-direction: column;
+                gap: 1.5rem;
+                /* Add gap between sidebar and main content */
+            }
+
+            .sidebar {
+                width: 100%;
+                margin-bottom: 0;
+                /* Remove margin as gap handles it */
+                height: auto;
+                /* Allow sidebar to adjust height */
+            }
+
+            .main-content {
+                padding: 1rem;
+                min-height: auto;
+                /* Allow height to adjust on smaller screens */
+            }
+
+            .species-gallery {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .main-image-wrapper {
+                /* Adjust for mobile */
+                flex-basis: 100%;
+                max-width: 100%;
+                height: 250px;
+                /* Set fixed height for mobile */
+                aspect-ratio: auto;
+                /* Remove aspect ratio for mobile */
+            }
+
+            .thumbnail-gallery {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                width: 100%;
+                max-height: none;
+                /* Remove max height on smaller screens if thumbnails flow */
+                overflow-y: visible;
+                /* Allow content to be fully visible */
+                flex-basis: 100%;
+                padding-right: 0;
+            }
+
+            .thumbnail-gallery img {
+                width: 80px;
+                height: 80px;
+            }
+
+            .thumbnail-gallery .thumb-arrow {
+                display: none;
+            }
+
+            .species-tabs button {
+                flex-basis: auto;
+                /* Allow items to shrink/grow */
+                padding: 0.75rem 0.5rem;
+                /* Reduce padding more for smaller screens */
+                font-size: 0.85rem;
+            }
+
+            .comment-item {
+                flex-direction: column;
+                /* Stack avatar and content vertically on small screens */
+                align-items: flex-start;
+            }
+
+            .comment-avatar {
+                margin-right: 0;
+                margin-bottom: 0.5rem;
+                /* Add space below avatar */
+            }
+
+            .nested-comment {
+                margin-left: 1rem;
+                /* Reduce indentation on mobile */
+                padding-left: 0.5rem;
+            }
+
+            .map-container {
+                /* Adjust for mobile */
+                width: 100%;
+                max-width: 100%;
+                aspect-ratio: 4/3;
+                /* Maintain aspect ratio for mobile as well */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header .logo span {
+                font-size: 1.25rem;
+            }
+
+            .header-right {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .species-header h1 {
+                font-size: 1.75rem;
+            }
+
+            .species-header p {
+                font-size: 1rem;
+            }
+
+            .species-tabs button {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.8rem;
+            }
+
+            .comment-form button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col">
+    <header class="header py-4">
+        <div class="container header-container flex items-center justify-between">
+            <div class="logo flex items-center space-x-2">
+                <img src="https://placehold.co/40x40/1a4a2a/ffffff?text=IV" alt="Logo Invertebrata Kaltara"
+                    class="h-10 w-10 rounded-full">
+                <span class="text-2xl font-bold text-gray-800">Invertebrata Kaltara</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="relative">
+                    <input type="text" placeholder="Cari spesies..." class="search-input pr-10" id="searchInput">
+                    <svg class="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+                <button class="btn-primary">Masuk</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex-1 flex p-4 space-x-4">
+        <aside class="sidebar">
+            <nav id="taxonomy-nav">
+            </nav>
+        </aside>
+
+        <main class="flex-1 flex flex-col space-y-4">
+            <div class="breadcrumb-container">
+                <ul class="breadcrumb flex text-sm">
+                    <li><a href="#" class="hover:underline">Semua Invertebrata</a></li>
+                    <li><a href="#" class="hover:underline">Mollusca</a></li>
+                    <li><a href="#" class="hover:underline">Gastropoda</a></li>
+                    <li><span class="text-gray-900 font-medium">Achatina fulica</span></li>
+                </ul>
+            </div>
+
+            <section class="main-content">
+                <div class="species-header flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+                    <div>
+                        <h1>Achatina fulica</h1>
+                        <p class="mt-1">Bekicot</p>
+                    </div>
+                    <div class="action-buttons mt-4 md:mt-0">
+                    </div>
+                </div>
+
+                <div class="species-gallery mb-8">
+                    <div class="main-image-wrapper">
+                        <img id="mainSpeciesImage" src="https://placehold.co/600x400/3498db/ffffff?text=Achatina+fulica"
+                            alt="Achatina fulica main image" class="rounded-lg">
+                    </div>
+                    <div class="thumbnail-gallery flex flex-col justify-between items-center">
+                        <div id="thumbnailContainer" class="flex flex-col gap-2 w-full">
+                            <img src="https://placehold.co/90x90/3498db/ffffff?text=Bekicot+1" alt="Thumbnail 1"
+                                class="rounded-lg border-2 border-transparent cursor-pointer active"
+                                onclick="setCurrentSlide(0)">
+                            <img src="https://placehold.co/90x90/2ecc71/ffffff?text=Bekicot+2" alt="Thumbnail 2"
+                                class="rounded-lg border-2 border-transparent cursor-pointer"
+                                onclick="setCurrentSlide(1)">
+                            <img src="https://placehold.co/90x90/e74c3c/ffffff?text=Bekicot+3" alt="Thumbnail 3"
+                                class="rounded-lg border-2 border-transparent cursor-pointer"
+                                onclick="setCurrentSlide(2)">
+                            <img src="https://placehold.co/90x90/f1c40f/ffffff?text=Bekicot+4" alt="Thumbnail 4"
+                                class="rounded-lg border-2 border-transparent cursor-pointer"
+                                onclick="setCurrentSlide(3)">
+                            <img src="https://placehold.co/90x90/9b59b6/ffffff?text=Bekicot+5" alt="Thumbnail 5"
+                                class="rounded-lg border-2 border-transparent cursor-pointer"
+                                onclick="setCurrentSlide(4)">
+                            <img src="https://placehold.co/90x90/795548/ffffff?text=Bekicot+6" alt="Thumbnail 6"
+                                class="rounded-lg border-2 border-transparent cursor-pointer"
+                                onclick="setCurrentSlide(5)">
+                            <img src="https://placehold.co/90x90/34495e/ffffff?text=Bekicot+7" alt="Thumbnail 7"
+                                class="rounded-lg border-2 border-transparent cursor-pointer"
+                                onclick="setCurrentSlide(6)">
+                            <img src="https://placehold.co/90x90/000000/ffffff?text=Bekicot+8" alt="Thumbnail 8"
+                                class="rounded-lg border-2 border-transparent cursor-pointer"
+                                onclick="setCurrentSlide(7)">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="species-tabs">
+                    <button class="active" onclick="openTab(event, 'deskripsi')">Deskripsi</button>
+                    <button onclick="openTab(event, 'klasifikasi')">Klasifikasi</button>
+                    <button onclick="openTab(event, 'habitat')">Habitat</button>
+                    <button onclick="openTab(event, 'ekologi')">Peran Ekologi</button>
+                    <button onclick="openTab(event, 'peta-persebaran')">Peta Persebaran</button>
+                    <button onclick="openTab(event, 'sumber-data')">Sumber Data</button>
+                </div>
+
+                <div id="deskripsi" class="tab-content">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Deskripsi Ilmiah</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        <i>Achatina fulica</i> (Bekicot) adalah spesies siput darat besar, umum ditemukan di banyak
+                        bagian dunia sebagai spesies invasif. Berasal dari Afrika Timur, bekicot ini memiliki cangkang
+                        berbentuk kerucut yang bervariasi dalam warna dan pola, seringkali dengan garis-garis coklat dan
+                        kuning. Mereka bersifat hermafrodit dan mampu menghasilkan telur dalam jumlah besar.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed mt-4">
+                        Bekicot merupakan hewan herbivora yang memakan berbagai jenis tumbuhan, buah-buahan, dan
+                        sayuran, menjadikannya hama pertanian yang signifikan. Mereka aktif di malam hari dan selama
+                        periode kelembaban tinggi. Meskipun tidak berbahaya bagi manusia secara langsung, mereka dapat
+                        menjadi vektor penyakit dan parasit tertentu.
+                    </p>
+                </div>
+
+                <div id="klasifikasi" class="tab-content hidden">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Klasifikasi Ilmiah</h3>
+                    <div class="data-table-container border border-gray-200 rounded-lg overflow-hidden">
+                        <table class="data-table w-full">
+                            <thead>
+                                <tr class="bg-gray-50">
+                                    <th class="py-2 px-4 text-left text-gray-600 font-semibold">Kategori</th>
+                                    <th class="py-2 px-4 text-left text-gray-600 font-semibold">Nama</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="py-2 px-4">Filum</td>
+                                    <td class="py-2 px-4">Mollusca</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 px-4">Kelas</td>
+                                    <td class="py-2 px-4">Gastropoda</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 px-4">Sub Kelas</td>
+                                    <td class="py-2 px-4">-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="habitat" class="tab-content hidden">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Habitat Spesies</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        Bekicot (<i>Achatina fulica</i>) sangat adaptif dan dapat hidup di berbagai habitat tropis dan
+                        subtropis. Mereka sering ditemukan di area pertanian, kebun, hutan, dan area perkotaan yang
+                        lembap. Mereka membutuhkan kelembaban tinggi dan suhu hangat untuk bertahan hidup dan berkembang
+                        biak.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed mt-4">
+                        Mereka aktif di malam malam atau setelah hujan, bersembunyi di bawah daun, batu, atau
+                        puing-puing selama siang hari untuk menghindari kekeringan. Kemampuan mereka untuk hibernasi di
+                        musim kering atau kondisi tidak menguntungkan juga berkontribusi pada penyebaran dan
+                        keberhasilan invasif mereka.
+                    </p>
+                </div>
+
+                <div id="ekologi" class="tab-content hidden">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">Peran Ekologi</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        Sebagai spesies invasif, Bekicot (<i>Achatina fulica</i>) memiliki dampak ekologi dan ekonomi
+                        yang signifikan. Mereka adalah hama pertanian yang merusak, memakan berbagai tanaman budidaya
+                        dan menyebabkan kerugian besar. Mereka juga dapat bersaing dengan spesies siput asli untuk
+                        sumber daya.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed mt-4">
+                        Selain itu, bekicot ini dapat menjadi inang perantara bagi nematoda parasit seperti
+                        <i>Angiostrongylus cantonensis</i> (cacing paru-paru tikus), yang dapat menyebabkan meningitis
+                        eosinofilik pada manusia jika bekicot yang terinfeksi dikonsumsi mentah atau kurang matang.
+                    </p>
+                </div>
+
+                <div id="peta-persebaran" class="tab-content hidden">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4">Peta Persebaran</h2>
+                    <div class="map-container">
+                        <img src="https://placehold.co/800x450/d4edda/495057?text=Peta+Persebaran+Achatina+fulica"
+                            alt="Peta Persebaran" class="map-image">
+                    </div>
+                </div>
+
+                <div id="sumber-data" class="tab-content hidden">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4">Sumber Data</h2>
+                    <div class="data-table-container border border-gray-200 rounded-lg overflow-hidden">
+                        <table class="data-table w-full">
+                            <thead>
+                                <tr class="bg-gray-50">
+                                    <th class="py-2 px-4 text-left text-gray-600 font-semibold">Kategori</th>
+                                    <th class="py-2 px-4 text-left text-gray-600 font-semibold">Informasi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="py-2 px-4">Peneliti</td>
+                                    <td class="py-2 px-4">Norman Gelar</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 px-4">Metode Penelitian</td>
+                                    <td class="py-2 px-4">Observasi Lapangan</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 px-4">Tanggal Penelitian</td>
+                                    <td class="py-2 px-4">12 Mei 2025</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 px-4">Lokasi Penelitian</td>
+                                    <td class="py-2 px-4">Danau Semayang</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="comments-section mt-8">
+                    <h2 class="mb-4" id="commentCountHeader">Komentar (3)</h2>
+
+                    <!-- Main comment form -->
+                    <div class="comment-form bg-white p-6 rounded-lg shadow-sm mb-6">
+                        <!-- Textarea is now readonly to prevent typing, but allows click events -->
+                        <textarea id="mainCommentTextarea" placeholder="Tulis komentar Anda..." readonly
+                            class="block w-full border border-gray-300 rounded-lg p-3 focus:ring focus:ring-blue-200 focus:border-blue-500 mb-4"></textarea>
+                        <div class="flex justify-end">
+                            <!-- Button is disabled -->
+                            <button id="kirimKomentarBtn" class="btn btn-primary" disabled>Kirim Komentar</button>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4" id="commentsList">
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Login Required Modal -->
+    <div id="loginRequiredModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Login Diperlukan</h3>
+            <p class="text-gray-700 mb-6">Anda harus login untuk dapat berkomentar.</p>
+            <div class="flex justify-center space-x-4">
+                <button id="modalLoginBtn" class="btn-primary">Login</button>
+                <button id="modalCancelBtn" class="btn-cancel">Batal</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // Image data for the gallery
+        const images = [
+            "https://placehold.co/600x400/3498db/ffffff?text=Achatina+fulica+1", // Blue
+            "https://placehold.co/600x400/2ecc71/ffffff?text=Achatina+fulica+2", // Green
+            "https://placehold.co/600x400/e74c3c/ffffff?text=Achatina+fulica+3", // Red
+            "https://placehold.co/600x400/f1c40f/ffffff?text=Achatina+fulica+4", // Yellow
+            "https://placehold.co/600x400/9b59b6/ffffff?text=Achatina+fulica+5", // Purple
+            "https://placehold.co/600x400/795548/ffffff?text=Achatina+fulica+6", // Brown
+            "https://placehold.co/600x400/000000/ffffff?text=Achatina+fulica+7"  // Black
+        ];
+
+        let currentSlide = 0;
+        const mainSpeciesImage = document.getElementById('mainSpeciesImage');
+        const thumbnails = document.querySelectorAll('.thumbnail-gallery img');
+        const thumbnailContainer = document.getElementById('thumbnailContainer');
+
+        // Function to change the main image based on slide index
+        function setCurrentSlide(index) {
+            currentSlide = index;
+            // Ensure index does not exceed images array bounds
+            if (currentSlide < 0) {
+                currentSlide = images.length - 1;
+            } else if (currentSlide >= images.length) {
+                currentSlide = 0;
+            }
+
+            mainSpeciesImage.src = images[currentSlide];
+
+            // Remove 'active' class from all thumbnails
+            thumbnails.forEach(thumb => thumb.classList.remove('active'));
+            // Add 'active' class to the current active thumbnail
+            // Ensure thumbnail element exists before trying to access it
+            if (thumbnails[currentSlide]) {
+                thumbnails[currentSlide].classList.add('active');
+
+                // Scroll thumbnail into view if not visible
+                thumbnails[currentSlide].scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest'
+                });
+            }
+        }
+
+        // Function to manage tabs
+        function openTab(evt, tabName) {
+            // Declare all variables
+            let i, tabcontent, tablinks;
+
+            // Get all elements with class="tab-content" and hide them
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+
+            // Get all elements with class="species-tabs button" and remove "active" class
+            tablinks = document.querySelectorAll(".species-tabs button");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+
+            // Show the current tab, and add an "active" class to the button that opened the tab
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.classList.add("active");
+        }
+
+
+        // Updated taxonomy data to be consistent with image display
+        const taxonomyData = {
+            // Level 0: Main categories (will be rendered with indent-0 and font-bold)
+            "Protozoa": {
+                "Amoebozoa": [], // Level 1
+                "Ciliophora (SAR)": [],
+                "Excavata": [],
+                "Opisthokonta": [] // Corrected to "Opisthokonta"
+            },
+            "Cnidaria": {
+                "Hydrozoa": [],
+                "Scyphozoa": [],
+                "Cubozoa": [],
+                "Anthozoa": []
+            },
+            "Ctenophora": {
+                "Tentaculata": []
+            },
+            "Echinodermata": {
+                "Asteroidea": [],
+                "Ophiuroidea": [],
+                "Echinoidea": [],
+                "Holothuroidea": [],
+                "Crinoidea": []
+            },
+            "Platyhelminthes": {
+                "Turbellaria": [],
+                "Trematoda": [],
+                "Cestoda": [],
+                "Monogenea": []
+            },
+            "Nematoda": {
+                "Secernentea": []
+            },
+            "Rotifera": {
+                "Bdelloidea": []
+            },
+            "Nematomorpha": {
+                "Gordioida": []
+            },
+            "Gastrotricha": {
+                "Chaetonotida": []
+            },
+            "Kinorhyncha": {
+                "Cyclorhagida": []
+            },
+            "Annelida": {
+                "Polychaeta": [],
+                "Oligochaeta": [],
+                "Hirudinea": []
+            },
+            "Mollusca": {
+                "Gastropoda": [],
+                "Bivalvia": [],
+                "Cephalopoda": [],
+                "Polyplacophora": [],
+                "Scaphopoda": [],
+                "Monoplacophora": [],
+                "Aplacophora": []
+            },
+            "Arthropoda": { // Level 0 (Phylum)
+                "Chelicerata": { // Level 1 (Subphylum, will be bold)
+                    "Arachnida": [], // Level 2 (Class)
+                    "Merostomata": [],
+                    "Pycnogonida": [],
+                    "Xiphosura": []
+                },
+                "Myriapoda": { // Level 1 (Subphylum, will be bold)
+                    "Chilopoda": [], // Level 2 (Class)
+                    "Diplopoda": [],
+                    "Pauropoda": [],
+                    "Symphyla": []
+                },
+                "Crustacea": { // Level 1 (Subphylum, will be bold)
+                    "Malacostraca": [], // Level 2 (Class)
+                    "Maxillopoda": [],
+                    "Remipedia": [],
+                    "Branchiopoda": [],
+                    "Copepoda": [],
+                    "Ostracoda": []
+                },
+                "Hexapoda": { // Level 1 (Subphylum, will be bold)
+                    "Collembola": [], // Level 2 (Class)
+                    "Protura": [],
+                    "Diplura": [],
+                    "Insecta": []
+                }
+            }
+        };
+
+        const taxonomyNav = document.getElementById('taxonomy-nav');
+
+        /**
+         * Helper function to recursively render taxonomy items.
+         * @param {object|Array} data - Part of the taxonomy tree to render.
+         * @param {HTMLElement} parentElement - The DOM element where items will be appended.
+         * @param {number} currentVisualIndentLevel - Current visual indentation level (0, 1, 2).
+         */
+        function renderTaxonomy(data, parentElement, currentVisualIndentLevel = 0) {
+            for (const key in data) {
+                const item = data[key];
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+
+                let fontWeightClass = 'font-normal'; // Default to normal
+                let displayKey = key; // Text to display
+
+                // Determine if the current item itself should be bold
+                let shouldBeBold = false;
+                if (currentVisualIndentLevel === 0) { // Filums (Protozoa, Cnidaria, Arthropoda)
+                    shouldBeBold = true;
+                } else if (currentVisualIndentLevel === 1 && typeof item === 'object' && !Array.isArray(item)) { // Subfilums (Chelicerata, Myriapoda, Crustacea, Hexapoda)
+                    shouldBeBold = true;
+                }
+
+                if (shouldBeBold) {
+                    fontWeightClass = 'font-bold';
+                }
+
+                a.className = `nav-list-item a block py-1 rounded-lg text-sm hover:bg-[#2a6a3a] ${fontWeightClass} indent-${currentVisualIndentLevel}`;
+                a.style.paddingLeft = `${0.5 + currentVisualIndentLevel * 1}rem`; // Adjusted indentation logic
+                a.textContent = displayKey;
+                a.href = "#"; // Link placeholder
+                a.dataset.category = key; // Data attribute for category
+
+                li.appendChild(a);
+                parentElement.appendChild(li);
+
+                // If item is an object (has sub-categories), call recursively
+                if (typeof item === 'object' && !Array.isArray(item)) {
+                    const ul = document.createElement('ul');
+                    li.appendChild(ul);
+                    renderTaxonomy(item, ul, currentVisualIndentLevel + 1);
+                } else if (Array.isArray(item) && item.length > 0) {
+                    // This handles direct children that are not further nested objects (e.g., Amoebozoa, Arachnida)
+                    const ul = document.createElement('ul');
+                    li.appendChild(ul);
+                    item.forEach(subItem => {
+                        const subLi = document.createElement('li');
+                        const subA = document.createElement('a');
+                        subA.className = `nav-list-item a block py-1 rounded-lg text-xs hover:bg-[#2a6a3a] font-normal indent-${currentVisualIndentLevel + 1}`; // All deepest items are normal font, text-xs
+                        subA.style.paddingLeft = `${0.5 + (currentVisualIndentLevel + 1) * 1}rem`; // Indent one more level
+                        subA.textContent = subItem;
+                        subA.href = "#";
+                        subA.dataset.category = subItem;
+                        subLi.appendChild(subA);
+                        ul.appendChild(subLi);
+                    });
+                }
+            }
+        }
+
+        // --- Comments & Replies Logic ---
+        const commentsList = document.getElementById('commentsList');
+        const mainCommentTextarea = document.getElementById('mainCommentTextarea');
+        const kirimKomentarBtn = document.getElementById('kirimKomentarBtn');
+        const commentCountHeader = document.getElementById('commentCountHeader');
+
+        // Login Modal elements
+        const loginRequiredModal = document.getElementById('loginRequiredModal');
+        const modalLoginBtn = document.getElementById('modalLoginBtn');
+        const modalCancelBtn = document.getElementById('modalCancelBtn');
+
+        // Initial comments (to be rendered dynamically for consistency)
+        const initialCommentsData = [
+            {
+                author: "davitputra@gmail.com",
+                date: "1 Juli 2025",
+                text: "Spesies yang menarik! Saya pernah menemukannya di danau dekat rumah.",
+                replies: [
+                    {
+                        author: "admin@gmail.com",
+                        date: "1 Juli 2025",
+                        text: "Terima kasih atas informasinya, Davit! Apakah Anda punya foto-foto dari penemuan tersebut?",
+                        replies: [
+                            {
+                                author: "anonymous@gmail.com",
+                                date: "2 Juli 2025",
+                                text: "Saya juga menemukan yang serupa di daerah X. Sangat menarik!"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                author: "anonymous@gmail.com",
+                date: "28 Juli 2025",
+                text: "Gambar-gambar yang disajikan sangat jelas!"
+            }
+        ];
+
+        // Function to update the comment count displayed
+        function updateCommentCount() {
+            let count = 0;
+            function countComments(comments) {
+                comments.forEach(comment => {
+                    count++;
+                    if (comment.replies && comment.replies.length > 0) {
+                        countComments(comment.replies);
+                    }
+                });
+            }
+            countComments(initialCommentsData);
+            commentCountHeader.textContent = `Komentar (${count})`;
+        }
+
+        // Function to create a comment element
+        function createCommentElement(commentData, isNested = false) {
+            const commentItemDiv = document.createElement('div');
+            commentItemDiv.className = 'comment-item';
+            if (isNested) {
+                commentItemDiv.classList.add('nested-comment');
+            }
+
+            // Generate initials from email
+            const emailParts = commentData.author.split('@');
+            const username = emailParts[0];
+            const authorInitials = username.substring(0, 2).toUpperCase();
+
+            const avatarDiv = document.createElement('div');
+            avatarDiv.className = 'comment-avatar';
+            avatarDiv.textContent = authorInitials;
+
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'comment-content';
+
+            const headerP = document.createElement('p');
+            headerP.className = 'comment-header';
+            headerP.innerHTML = `${commentData.author} <span class="comment-meta">- ${commentData.date}</span>`;
+
+            const bodyP = document.createElement('p');
+            bodyP.className = 'comment-body';
+            bodyP.textContent = commentData.text;
+
+            const actionsDiv = document.createElement('div');
+            actionsDiv.className = 'comment-actions';
+            // Removed the reply button as per previous request
+            // const replyBtn = document.createElement('button');
+            // replyBtn.className = 'reply-btn';
+            // replyBtn.textContent = 'Balas';
+            // actionsDiv.appendChild(replyBtn);
+
+
+            const repliesContainer = document.createElement('div');
+            repliesContainer.className = 'replies-container';
+
+            contentDiv.appendChild(headerP);
+            contentDiv.appendChild(bodyP);
+            contentDiv.appendChild(actionsDiv);
+            contentDiv.appendChild(repliesContainer); // Container for nested replies
+
+            commentItemDiv.appendChild(avatarDiv);
+            commentItemDiv.appendChild(contentDiv);
+
+            // Set a unique ID for this comment element to easily retrieve its data later
+            commentItemDiv.dataset.commentPath = JSON.stringify(commentData); // Store the full data path
+
+            // Render nested replies
+            if (commentData.replies && commentData.replies.length > 0) {
+                commentData.replies.forEach(reply => {
+                    repliesContainer.appendChild(createCommentElement(reply, true)); // Recursively create nested comments
+                });
+            }
+
+            return commentItemDiv;
+        }
+
+        // Function to render all comments
+        function renderAllComments() {
+            commentsList.innerHTML = ''; // Clear existing comments
+            initialCommentsData.forEach(comment => {
+                commentsList.appendChild(createCommentElement(comment));
+            });
+            updateCommentCount(); // Update count after rendering
+        }
+
+        // Function to show the login required modal
+        function showLoginRequiredModal() {
+            loginRequiredModal.classList.remove('hidden');
+        }
+
+        // Function to hide the login required modal
+        function hideLoginRequiredModal() {
+            loginRequiredModal.classList.add('hidden');
+        }
+
+        // Event listener for main comment submission button (though disabled, click can still be caught)
+        kirimKomentarBtn.addEventListener('click', () => {
+            showLoginRequiredModal();
+        });
+
+        // Event listener for textarea click
+        mainCommentTextarea.addEventListener('click', (event) => {
+            // Prevent the default click behavior (which might try to focus and allow typing in some rare cases)
+            event.preventDefault();
+            showLoginRequiredModal();
+            // Blur the textarea immediately after showing the modal to ensure it doesn't stay 'focused' visually
+            mainCommentTextarea.blur();
+        });
+
+        // Event listener for textarea focus (as a fallback for accessibility, but main click handles it)
+        mainCommentTextarea.addEventListener('focus', (event) => {
+            event.preventDefault(); // Prevent actual focus
+            showLoginRequiredModal();
+            mainCommentTextarea.blur(); // Remove focus immediately
+        });
+
+
+        // Event listener for Login button inside the modal
+        modalLoginBtn.addEventListener('click', () => {
+            // Redirect to login page
+            window.location.href = 'login.html'; // You can change this URL to your actual login page
+            hideLoginRequiredModal(); // Hide modal after redirection
+        });
+
+        // Event listener for Cancel button inside the modal
+        modalCancelBtn.addEventListener('click', () => {
+            hideLoginRequiredModal(); // Just hide the modal
+        });
+
+        // Event listener to close modal if clicked outside of content
+        loginRequiredModal.addEventListener('click', (event) => {
+            if (event.target === loginRequiredModal) {
+                hideLoginRequiredModal();
+            }
+        });
+
+        // Initialize the application when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebarNavRoot = document.getElementById('taxonomy-nav');
+
+            // Create the "Semua Invertebrata" special button/header
+            const allInvertebrataDiv = document.createElement('div');
+            allInvertebrataDiv.className = `nav-item-header active w-full text-left py-2 px-3 rounded-lg font-bold text-sm bg-[#2a6a3a] text-white cursor-pointer mb-2`;
+            allInvertebrataDiv.textContent = "Semua Invertebrata";
+            allInvertebrataDiv.dataset.category = "Semua Invertebrata";
+            // No click action for this page as it's a detail page
+            sidebarNavRoot.appendChild(allInvertebrataDiv);
+
+            // Render the main taxonomy list
+            const mainTaxonomyUl = document.createElement('ul');
+            sidebarNavRoot.appendChild(mainTaxonomyUl);
+            // Start rendering Filums (e.g., Protozoa) with currentVisualIndentLevel = 0
+            renderTaxonomy(taxonomyData, mainTaxonomyUl, 0);
+
+            // Initialize gallery slide
+            setCurrentSlide(0);
+            // By default, open the "Deskripsi" tab
+            document.querySelector('.species-tabs button[onclick="openTab(event, \'deskripsi\')"]').click();
+
+            // Render initial comments
+            renderAllComments();
+        });
+    </script>
+</body>
+
+</html>
