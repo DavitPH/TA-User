@@ -13,7 +13,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
 
     <style>
-        /* Custom styles for Tailwind overrides or specific elements */
+        /* General body and html settings to prevent horizontal scroll */
+        html,
+        body {
+            overflow-x: hidden;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f0f2f5;
@@ -60,9 +65,8 @@
             border: 1px solid #cbd5e0;
             border-radius: 0.5rem;
             padding: 0.75rem 1rem;
-            /* Tambahkan lebar spesifik agar tidak terpotong */
             width: 320px;
-            /* w-80 */
+            /* Default desktop width */
             font-size: 1rem;
             outline: none;
             transition: border-color 0.2s;
@@ -82,6 +86,10 @@
 
         .breadcrumb {
             color: #6c757d;
+            flex-wrap: wrap;
+            /* Allow breadcrumbs to wrap */
+            overflow: hidden;
+            /* Hide potential overflow, combine with flex-wrap */
         }
 
         .breadcrumb li+li::before {
@@ -106,6 +114,7 @@
             pointer-events: none;
         }
 
+        /* Sidebar: Default for larger screens and handles responsive stacking for mobile */
         .sidebar {
             background-color: #1a4a2a;
             color: white;
@@ -115,8 +124,27 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             flex-shrink: 0;
             width: 250px;
+            /* Default desktop width */
             height: calc(100vh - 8rem);
+            /* Take remaining vertical space on desktop */
         }
+
+        /* Mobile adjustments for sidebar.
+           It should still be scrollable, but take full width and height will be limited by parent or set to auto
+           to stack correctly. */
+        @media (max-width: 767px) {
+            .sidebar {
+                width: 100%;
+                /* Full width on small screens */
+                height: 200px;
+                /* Fixed height for scrollable sidebar on mobile */
+                overflow-y: auto;
+                /* Enable vertical scrolling */
+                margin-bottom: 1rem;
+                /* Space below sidebar when stacked */
+            }
+        }
+
 
         .sidebar .nav-item-header {
             padding: 0.5rem 0.5rem;
@@ -192,14 +220,17 @@
             background-color: #2a6a3a;
         }
 
+        /* Updated h1 styling: always row, align items baseline for better visual alignment */
         .species-header h1 {
             color: #2c3e50;
             font-size: 2.25rem;
             font-weight: 700;
             display: flex;
-            /* Make h1 a flex container */
-            align-items: center;
-            /* Vertically align items */
+            /* Always flex */
+            flex-direction: row;
+            /* Always row */
+            align-items: baseline;
+            /* Align items to their text baseline */
             gap: 0.75rem;
             /* Space between common name and status */
         }
@@ -210,18 +241,23 @@
             margin-top: 0.5rem;
         }
 
+        /* Species Gallery Default (Mobile-first vertical stacking) */
         .species-gallery {
             display: flex;
             gap: 1rem;
             margin-top: 1.5rem;
             align-items: flex-start;
+            flex-direction: column;
+            /* Default: stack vertically (mobile-first) */
         }
 
         .main-image-wrapper {
             position: relative;
             flex-grow: 1;
-            flex-basis: 65%;
-            max-width: 65%;
+            flex-basis: 100%;
+            /* Full width on mobile */
+            max-width: 100%;
+            /* Full width on mobile */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -244,15 +280,38 @@
             display: none;
         }
 
+        /* Styles for thumbnail gallery - Mobile First (Horizontal Scroll) */
         .thumbnail-gallery {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
+            /* Mobile: thumbnails in a row */
             gap: 0.5rem;
-            overflow-y: auto;
-            max-height: 220px;
-            flex-basis: 35%;
-            padding-right: 0.05rem;
+            overflow-x: auto;
+            /* Mobile: enable horizontal scrolling */
+            overflow-y: hidden;
+            /* Mobile: hide vertical overflow */
+            max-height: none;
+            /* Mobile: remove max height */
+            flex-basis: 100%;
+            /* Mobile: full width for thumbnails */
+            padding-right: 0;
+            justify-content: flex-start;
+            /* Align items to start for horizontal scroll */
+            flex-wrap: nowrap;
+            /* Prevent wrapping to ensure horizontal scroll */
         }
+
+        /* Inner container for thumbnails to control their layout */
+        .thumbnail-gallery #thumbnailContainer {
+            display: flex;
+            flex-direction: row;
+            /* Mobile default: horizontal row */
+            gap: 0.5rem;
+            flex-wrap: nowrap;
+            /* Prevent wrapping in horizontal scroll */
+            justify-content: flex-start;
+        }
+
 
         .thumbnail-gallery img {
             width: 90px;
@@ -262,6 +321,8 @@
             border: 2px solid transparent;
             cursor: pointer;
             transition: border-color 0.2s ease;
+            flex-shrink: 0;
+            /* Prevent images from shrinking on mobile */
         }
 
         .thumbnail-gallery img.active {
@@ -532,35 +593,56 @@
         }
 
 
-        /* Responsiveness */
-        @media (max-width: 1024px) {
-            .container.header-container {
-                /* Kelas ini tidak lagi relevan untuk header baru, tapi bisa dibiarkan jika ada elemen lain yang memakainya */
-                flex-wrap: wrap;
-                justify-content: center;
+        /* Responsiveness Media Queries */
+        /* Changes for mobile layout will be applied here using max-width */
+        @media (max-width: 767px) {
+
+            /* Header adjustments for mobile */
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding-bottom: 1rem;
+                width: 100%;
+                /* Ensure header takes full width and prevents overflow */
             }
 
-            .header-right {
-                /* Kelas ini mungkin tidak ada lagi di struktur baru, tapi biarkan aturan ini jika ada yang memakainya */
+            header>div:first-child {
+                margin-bottom: 1rem;
+            }
+
+            header>div:last-child {
                 width: 100%;
-                justify-content: center;
-                margin-top: 1rem;
-                flex-direction: column;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
             }
 
             .search-input {
-                width: 100%;
+                width: calc(100% - 3rem);
             }
 
+            /* Main content area layout for mobile */
             .flex-1.flex.p-4.space-x-4 {
+                /* Target this specific container div */
                 flex-direction: column;
-                gap: 1.5rem;
+                /* Stack sidebar and main content */
+                gap: 1rem;
+                /* Space between stacked elements */
+                padding: 1rem;
+                /* Adjust padding */
             }
 
+            /* Sidebar on mobile: It should still be scrollable, but take full width and height will be limited by parent or set to auto
+               to stack correctly. */
             .sidebar {
                 width: 100%;
-                margin-bottom: 0;
-                height: auto;
+                /* Full width on mobile */
+                height: 200px;
+                /* Fixed height for scrollable sidebar on mobile */
+                overflow-y: auto;
+                /* Enable vertical scrolling */
+                margin-bottom: 1rem;
+                /* Space below sidebar */
             }
 
             .main-content {
@@ -568,6 +650,43 @@
                 min-height: auto;
             }
 
+            /* Species Header on mobile */
+            .species-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            /* h1 in mobile should now be row, so only font-size changes */
+            .species-header h1 {
+                font-size: 1.75rem;
+                flex-direction: row;
+                /* Keep it row for inline badge */
+                align-items: baseline;
+                /* Align text baseline */
+                flex-wrap: wrap;
+                /* Allow common name and status to wrap if space is tight */
+            }
+
+            .species-header h1 #conservationStatus {
+                flex-shrink: 0;
+                /* Prevent the badge from shrinking */
+            }
+
+
+            .species-header p {
+                font-size: 1rem;
+            }
+
+            .species-header .action-buttons {
+                width: 100%;
+                display: flex;
+                justify-content: flex-start;
+                gap: 0.5rem;
+                flex-wrap: wrap;
+                margin-top: 1rem;
+            }
+
+            /* Species Gallery on mobile */
             .species-gallery {
                 flex-direction: column;
                 align-items: center;
@@ -582,22 +701,27 @@
 
             .thumbnail-gallery {
                 flex-direction: row;
-                flex-wrap: wrap;
-                justify-content: center;
+                /* Mobile: thumbnails in a row */
+                flex-wrap: nowrap;
+                /* Prevent wrapping */
+                justify-content: flex-start;
+                /* Align to start */
                 width: 100%;
+                /* Take full width */
                 max-height: none;
-                overflow-y: visible;
-                flex-basis: 100%;
+                /* No max height constraint */
+                overflow-x: auto;
+                /* Enable horizontal scroll */
+                overflow-y: hidden;
+                /* Hide vertical overflow */
                 padding-right: 0;
             }
 
             .thumbnail-gallery img {
                 width: 80px;
                 height: 80px;
-            }
-
-            .thumbnail-gallery .thumb-arrow {
-                display: none;
+                flex-shrink: 0;
+                /* Important to prevent shrinking */
             }
 
             .species-tabs button {
@@ -606,6 +730,14 @@
                 font-size: 0.85rem;
             }
 
+            /* Map on mobile */
+            #speciesMapContainer {
+                width: 100%;
+                max-width: 100%;
+                height: 300px;
+            }
+
+            /* Comments section on mobile */
             .comment-item {
                 flex-direction: column;
                 align-items: flex-start;
@@ -621,49 +753,55 @@
                 padding-left: 0.5rem;
             }
 
-            .nav-item.active {
-                background-color: #2a6a3a;
-                font-weight: 600;
-            }
-
-            .map-container {
-                width: 100%;
-                max-width: 100%;
-                aspect-ratio: 4/3;
-            }
-
             .trash-icon {
                 top: 0.75rem;
                 right: 0.75rem;
             }
+
+            /* Breadcrumbs font size on mobile */
+            .breadcrumb {
+                font-size: 0.7rem;
+                /* Even smaller font size for mobile breadcrumbs */
+            }
         }
 
-        @media (max-width: 768px) {
-            .header .logo span {
-                font-size: 1.25rem;
+        /* Desktop specific styles (min-width applies from this breakpoint onwards) */
+        @media (min-width: 768px) {
+            header {
+                flex-direction: row;
+                /* Ensure desktop header is row */
             }
 
-            .header-right {
-                /* Kelas ini mungkin tidak ada lagi di struktur baru, tapi biarkan aturan ini jika ada yang memakainya */
+            .species-gallery {
+                flex-direction: row;
+                /* Desktop: main image and thumbnails side-by-side */
+            }
+
+            .main-image-wrapper {
+                flex-basis: 65%;
+                max-width: 65%;
+            }
+
+            .thumbnail-gallery {
                 flex-direction: column;
-                gap: 0.75rem;
+                /* Desktop: thumbnails stacked vertically */
+                overflow-y: auto;
+                /* Enable vertical scrolling */
+                overflow-x: hidden;
+                /* Hide horizontal scroll on desktop */
+                max-height: 220px;
+                flex-basis: 35%;
             }
 
-            .species-header h1 {
-                font-size: 1.75rem;
+            /* Ensure the inner thumbnail container also stacks vertically on desktop */
+            .thumbnail-gallery #thumbnailContainer {
+                flex-direction: column;
+                justify-content: flex-start;
+                /* Align to top */
             }
 
-            .species-header p {
-                font-size: 1rem;
-            }
-
-            .species-tabs button {
-                padding: 0.75rem 0.5rem;
-                font-size: 0.8rem;
-            }
-
-            .comment-form button {
-                width: 100%;
+            #speciesMapContainer {
+                height: 400px;
             }
         }
     </style>
@@ -719,8 +857,8 @@
                         <div class="main-image-wrapper">
                             <img id="mainSpeciesImage" src="" alt="Main species image" class="rounded-lg">
                         </div>
-                        <div class="thumbnail-gallery flex flex-col justify-between items-center">
-                            <div id="thumbnailContainer" class="flex flex-col gap-2 w-full">
+                        <div class="thumbnail-gallery">
+                            <div id="thumbnailContainer" class="flex gap-2 w-full">
                             </div>
                         </div>
                     </div>
@@ -815,7 +953,6 @@
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
         <script>
-            // Updated taxonomy data structure (consistent with index.html)
             const taxonomyData = {
                 "Semua Invertebrata": {
                     "Protozoa": ["Amoebozoa", "Ciliophora (SAR)", "Excavata", "Opisthokonta"],
@@ -959,9 +1096,10 @@
                 evt.currentTarget.classList.add("active");
             }
 
-            // --- Taxonomy Sidebar Logic (No changes here) ---
+            // --- Taxonomy Sidebar Logic ---
             const taxonomyNav = document.getElementById('taxonomy-nav');
 
+            // Find category path
             function findCategoryPath(data, targetCategory, currentPath = []) {
                 if (typeof data === 'string') {
                     if (data === targetCategory) {
@@ -990,6 +1128,7 @@
                 return null;
             }
 
+            // Render taxonomy navigation
             function renderTaxonomy(data, parentElement, level = 0, currentPath = []) {
                 const ul = document.createElement('ul');
                 ul.className = `space-y-1 ${level > 0 ? 'ml-4 border-l border-gray-600 pl-2' : ''}`;
@@ -1012,15 +1151,8 @@
                         } else {
                             fontWeightClass = 'font-semibold';
                         }
-                    } else if (Array.isArray(data[key])) {
-                        iconClass = 'fas fa-folder';
-                        if (level === 0) {
-                            fontWeightClass = 'font-bold';
-                        } else {
-                            fontWeightClass = 'font-semibold';
-                        }
-                    } else {
-                        iconClass = 'fas fa-sitemap';
+                    } else { /* Leaf node or simple array item */
+                        iconClass = 'fas fa-arrow-right'; /* Using arrow-right for child items */
                         fontWeightClass = 'font-normal';
                     }
 
@@ -1046,6 +1178,7 @@
                             const subItemFullPathSegment = [...fullPathSegment, subItemKey];
 
                             const subNavItemDiv = document.createElement('div');
+                            /* Ensure proper class and icon for sub-items within an array */
                             subNavItemDiv.className = `nav-list-item cursor-pointer text-xs py-1 px-3 rounded-lg font-normal`;
                             subNavItemDiv.style.paddingLeft = `${0.5 + (level + 1) * 1}rem`;
                             subNavItemDiv.innerHTML = `<i class="fas fa-arrow-right mr-2 text-xs"></i> <span>${subItemKey.replace(/_/g, ' ')}</span>`;
@@ -1063,66 +1196,56 @@
                 parentElement.appendChild(ul);
             }
 
-            // Helper function to determine icon based on category and level
-            function getTaxonomyIcon(key, level, itemData) {
-                if (level === 0 && key === "Semua Invertebrata") {
-                    return 'fas fa-globe';
-                } else if (typeof itemData === 'object' && !Array.isArray(itemData)) {
-                    return 'fas fa-folder'; // Parent category with nested children (e.g., Arthropoda)
-                } else {
-                    return 'fas fa-sitemap'; // Leaf category or list item
-                }
-            }
-
-            // Fungsi untuk memperbarui item taksonomi yang aktif di sidebar
+            /* Fungsi untuk memperbarui item taksonomi yang aktif di sidebar */
             function updateActiveTaxonomy(speciesDetail) {
                 const allNavItems = document.querySelectorAll('#taxonomy-nav .nav-list-item, #taxonomy-nav .nav-item-header');
                 allNavItems.forEach(item => item.classList.remove('active'));
 
                 let activatedElement = null;
+                /* Path lengkap dari kategori spesies (misal: ["Mollusca", "Gastropoda"]) */
+                /* Pastikan taxonomyData["Semua Invertebrata"] adalah root yang benar untuk pencarian */
+                const fullTaxonomyRoot = { "Semua Invertebrata": taxonomyData["Semua Invertebrata"] };
+                let speciesCategoryPath = findCategoryPath(fullTaxonomyRoot, speciesDetail.category);
 
-                // Prioritas 1: Coba aktifkan kategori spesifik (e.g., Gastropoda)
-                if (speciesDetail.category) {
-                    const categoryElement = document.querySelector(`[data-category="${speciesDetail.category}"]`);
-                    if (categoryElement) {
-                        activatedElement = categoryElement;
+                /* If the category path is not found for speciesDetail.category, try with speciesDetail.filum */
+                if (!speciesCategoryPath || speciesCategoryPath.length === 0) {
+                    speciesCategoryPath = findCategoryPath(fullTaxonomyRoot, speciesDetail.filum);
+                }
+
+                /* If a category path is found, try to activate the most specific element */
+                if (speciesCategoryPath && speciesCategoryPath.length > 0) {
+                    /* Activate all parent elements in the path */
+                    for (let i = 0; i < speciesCategoryPath.length; i++) {
+                        const currentPathSegment = speciesCategoryPath[i];
+                        const elementToActivate = document.querySelector(`[data-category="${currentPathSegment}"]`);
+                        if (elementToActivate) {
+                            elementToActivate.classList.add('active');
+                            activatedElement = elementToActivate; /* Keep track of the last activated (most specific) */
+                        }
                     }
                 }
 
-                // Prioritas 2: Jika kategori tidak ditemukan/diaktifkan, coba aktifkan filum (e.g., Mollusca)
-                if (!activatedElement && speciesDetail.filum) {
-                    const filumElement = document.querySelector(`[data-category="${speciesDetail.filum}"]`);
-                    if (filumElement) {
-                        activatedElement = filumElement;
-                    }
-                }
-
-                // Terapkan kelas aktif dan gulirkan ke tampilan jika elemen ditemukan
-                if (activatedElement) {
-                    activatedElement.classList.add('active');
-                    activatedElement.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'nearest'
-                    });
-                } else {
-                    // Jika tidak ada kategori atau filum yang cocok, default ke "Semua Invertebrata"
+                /* If no specific category or filum was activated, default to "Semua Invertebrata" */
+                if (!activatedElement) {
                     const allInvertebrataHeader = document.querySelector('.nav-item-header[data-category="Semua Invertebrata"]');
                     if (allInvertebrataHeader) {
+                        activatedElement = allInvertebrataHeader;
                         allInvertebrataHeader.classList.add('active');
-                        allInvertebrataHeader.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'nearest'
-                        });
                     }
+                }
+
+                if (activatedElement) {
+                    activatedElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 }
             }
 
-            // Fungsi untuk memperbarui breadcrumbs dinamis
+
+            /* Fungsi untuk memperbarui breadcrumbs dinamis */
             function updateBreadcrumbs(speciesFilum, speciesCategory, speciesScientificName) {
                 const breadcrumbsUl = document.getElementById('dynamic-breadcrumbs');
                 breadcrumbsUl.innerHTML = '';
 
-                // Mulai dengan "Semua Invertebrata" link
+                /* Mulai dengan "Semua Invertebrata" link */
                 let linkRoot = document.createElement('li');
                 let aRoot = document.createElement('a');
                 aRoot.href = `index.html?category=${encodeURIComponent("Semua Invertebrata")}`;
@@ -1131,12 +1254,19 @@
                 linkRoot.appendChild(aRoot);
                 breadcrumbsUl.appendChild(linkRoot);
 
-                // Find full path to the species' category/class/subclass including "Semua Invertebrata" root
+                /* Find full path to the species' category/class/subclass including "Semua Invertebrata" root */
                 let targetCategoryForPath = speciesCategory || speciesFilum;
-                let foundPath = findCategoryPath(taxonomyData, targetCategoryForPath, []);
+                /* Ensure findCategoryPath is called with the full taxonomyData object */
+                const fullTaxonomyRoot = { "Semua Invertebrata": taxonomyData["Semua Invertebrata"] };
+                let foundPath = findCategoryPath(fullTaxonomyRoot, targetCategoryForPath);
+
+                /* Fallback: If the exact category path isn't found, try finding the filum path */
+                if (!foundPath && speciesFilum) {
+                    foundPath = findCategoryPath(fullTaxonomyRoot, speciesFilum);
+                }
 
                 if (foundPath && foundPath.length > 0) {
-                    // Iterate through the found path, starting after "Semua Invertebrata" if it's the first element
+                    /* Iterate through the found path, starting after "Semua Invertebrata" if it's the first element */
                     let startIndex = 0;
                     if (foundPath[0] === "Semua Invertebrata") {
                         startIndex = 1;
@@ -1154,7 +1284,7 @@
                     }
                 }
 
-                // Add current species scientific name (as text, not link)
+                /* Add current species scientific name (as text, not link) */
                 let currentSpeciesLi = document.createElement('li');
                 let currentSpeciesSpan = document.createElement('span');
                 currentSpeciesSpan.className = 'text-gray-900 font-medium';
@@ -1163,7 +1293,8 @@
                 breadcrumbsUl.appendChild(currentSpeciesLi);
             }
 
-            // --- Comment & Reply Logic (unchanged from previous version) ---
+
+            /* --- Comment & Reply Logic (unchanged from previous version) --- */
             const commentsList = document.getElementById('commentsList');
             const mainCommentTextarea = document.getElementById('mainCommentTextarea');
             const kirimKomentarBtn = document.getElementById('kirimKomentarBtn');
@@ -1423,7 +1554,7 @@
                 }
             });
 
-            // --- Initial Load of Species Details and Sidebar ---
+            /* --- Initial Load of Species Details and Sidebar --- */
             document.addEventListener('DOMContentLoaded', () => {
                 const urlParams = new URLSearchParams(window.location.search);
                 const speciesId = parseInt(urlParams.get('id'));
@@ -1434,25 +1565,24 @@
                 }
 
                 if (speciesDetail) {
-                    // Update Header
-                    document.getElementById('speciesCommonName').textContent = speciesDetail.name; // Remove this line
-                    // Move the common name text content inside the h1, before the span
+                    /* Update Header */
                     const speciesCommonNameElement = document.getElementById('speciesCommonName');
+                    // Changed to include span directly in h1 innerHTML for consistent inline display
                     speciesCommonNameElement.innerHTML = `${speciesDetail.name} <span id="conservationStatus" class="bg-gray-800 bg-opacity-70 text-white text-sm font-normal px-2 py-1 rounded-full whitespace-nowrap"></span>`;
                     document.getElementById('speciesScientificName').textContent = speciesDetail.scientificName;
                     document.getElementById('conservationStatus').textContent = speciesDetail.conservationStatus || 'N/A';
                     document.title = `Detail Spesies - ${speciesDetail.scientificName}`;
 
-                    // Update Gallery
+                    /* Update Gallery */
                     currentSpeciesImages = speciesDetail.images;
                     renderThumbnails(currentSpeciesImages);
 
-                    // Update Tab Contents
+                    /* Update Tab Contents */
                     document.getElementById('deskripsiContent').innerHTML = speciesDetail.description;
                     document.getElementById('habitatContent').innerHTML = speciesDetail.habitat;
                     document.getElementById('ekologiContent').innerHTML = speciesDetail.ecologyRole;
 
-                    // Update Classification Table
+                    /* Update Classification Table */
                     const klasifikasiTableBody = document.getElementById('klasifikasiTableBody');
                     klasifikasiTableBody.innerHTML = `
                         <tr>
@@ -1469,28 +1599,27 @@
                         </tr>
                     `;
 
-                    // --- PETA PERSEBARAN BARU DENGAN LEAFLET ---
+                    /* --- PETA PERSEBARAN BARU DENGAN LEAFLET --- */
                     const speciesMapContainer = document.getElementById('speciesMapContainer');
                     const mapFilterButtonsContainer = document.getElementById('mapFilterButtons');
-                    let speciesMap = null; // Variabel untuk menyimpan instance peta
+                    let speciesMap = null; /* Variabel untuk menyimpan instance peta */
 
                     function initializeSpeciesMap() {
-                        // Hanya inisialisasi jika belum ada
+                        /* Hanya inisialisasi jika belum ada */
                         if (speciesMap === null) {
-                            speciesMap = L.map('speciesMapContainer').setView([3.4333, 117.6500], 9); // Fokus ke Kalimantan Utara
+                            speciesMap = L.map('speciesMapContainer').setView([3.4333, 117.6500], 9); /* Fokus ke Kalimantan Utara */
                             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                                 maxZoom: 19,
                                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                             }).addTo(speciesMap);
                         }
-                        // speciesMap.invalidateSize(); // Penting saat tab berubah atau ukuran div berubah - ini dipanggil di renderSpeciesMap
                         return speciesMap;
                     }
 
-                    const allRegionsLayer = L.featureGroup(); // Untuk batas Kaltara
-                    const speciesGeoJSONLayer = L.featureGroup(); // Untuk GeoJSON spesies
+                    const allRegionsLayer = L.featureGroup(); /* Untuk batas Kaltara */
+                    const speciesGeoJSONLayer = L.featureGroup(); /* Untuk GeoJSON spesies */
 
-                    // Load Kaltara GeoJSON boundaries (from tambahPeta.html reference)
+                    /* Load Kaltara GeoJSON boundaries (from tambahPeta.html reference) */
                     const geojsonFiles = [
                         'data/geojson/65.01_Bulungan.geojson',
                         'data/geojson/65.02_Malinau.geojson',
@@ -1510,9 +1639,9 @@
                             .then(data => {
                                 L.geoJSON(data, {
                                     style: {
-                                        color: '#28a745', // Warna garis hijau
-                                        weight: 2, // Ketebalan garis
-                                        fillColor: '#7CFC00', // Warna isi hijau muda
+                                        color: '#28a745', /* Warna garis hijau */
+                                        weight: 2, /* Ketebalan garis */
+                                        fillColor: '#7CFC00', /* Warna isi hijau muda */
                                         fillOpacity: 0.3
                                     }
                                 }).addTo(allRegionsLayer);
@@ -1523,22 +1652,20 @@
 
                     function renderSpeciesMap(mapDataArray = []) {
                         const currentMapInstance = initializeSpeciesMap();
-                        speciesGeoJSONLayer.clearLayers(); // Bersihkan lapisan GeoJSON spesies sebelumnya
+                        speciesGeoJSONLayer.clearLayers(); /* Bersihkan lapisan GeoJSON spesies sebelumnya */
 
-                        currentMapInstance.addLayer(allRegionsLayer); // Pastikan batas Kaltara selalu ada
-                        let bounds = new L.LatLngBounds([]); // Untuk menyesuaikan zoom peta
+                        currentMapInstance.addLayer(allRegionsLayer); /* Pastikan batas Kaltara selalu ada */
+                        let bounds = new L.LatLngBounds([]); /* Untuk menyesuaikan zoom peta */
 
-                        // Tambahkan batas Kaltara ke bounds jika sudah ada layer di allRegionsLayer
+                        /* Tambahkan batas Kaltara ke bounds jika sudah ada layer di allRegionsLayer */
                         if (allRegionsLayer.getLayers().length > 0) {
                             bounds.extend(allRegionsLayer.getBounds());
                         } else {
-                            // Fallback jika GeoJSON Kaltara belum dimuat, set ke pusat Kaltara
-                            // Ini akan ter-update saat GeoJSON Kaltara selesai dimuat
+                            /* Fallback jika GeoJSON Kaltara belum dimuat, set ke pusat Kaltara */
                             currentMapInstance.setView([3.4333, 117.6500], 9);
                         }
 
                         if (mapDataArray.length === 0) {
-                            // Jika tidak ada data peta spesies, hanya tampilkan batas Kaltara
                             mapFilterButtonsContainer.innerHTML = '<p class="text-gray-500 text-center">Tidak ada peta persebaran untuk spesies ini.</p>';
                             if (bounds.isValid()) currentMapInstance.fitBounds(bounds, { padding: [50, 50] });
                             currentMapInstance.invalidateSize();
@@ -1549,66 +1676,55 @@
                             if (mapGeoJSON && typeof mapGeoJSON === 'object' && mapGeoJSON.type) {
                                 const layer = L.geoJSON(mapGeoJSON, {
                                     style: {
-                                        color: '#007bff', // Warna garis GeoJSON spesies
+                                        color: '#007bff', /* Warna garis GeoJSON spesies */
                                         weight: 3,
                                         fillColor: '#007bff',
-                                        fillOpacity: 0.5 // Sedikit lebih pekat
+                                        fillOpacity: 0.5
                                     },
-                                    // Hapus pointToLayer agar tidak menampilkan marker untuk tipe Point
-                                    // pointToLayer: function (feature, latlng) {
-                                    //     if (feature.properties && feature.properties.name) {
-                                    //         return L.marker(latlng).bindPopup(feature.properties.name);
-                                    //     }
-                                    //     return L.marker(latlng);
-                                    // }
                                 }).addTo(speciesGeoJSONLayer);
 
                                 if (layer.getBounds().isValid()) {
                                     bounds.extend(layer.getBounds());
-                                } else if (layer.getLatLng) { // Untuk marker (jika masih ada data Point)
-                                    // Handle point if it wasn't converted to polygon, extend bounds for it
+                                } else if (layer.getLatLng) {
                                     bounds.extend(layer.getLatLng());
                                 }
                             }
                         });
 
-                        currentMapInstance.addLayer(speciesGeoJSONLayer); // Tambahkan lapisan GeoJSON spesies
+                        currentMapInstance.addLayer(speciesGeoJSONLayer); /* Tambahkan lapisan GeoJSON spesies */
 
                         if (bounds.isValid()) {
-                            currentMapInstance.fitBounds(bounds, { padding: [50, 50] }); // Sesuaikan zoom agar semua lapisan terlihat
+                            currentMapInstance.fitBounds(bounds, { padding: [50, 50] });
                         } else {
-                            // Fallback jika bounds GeoJSON spesies tidak valid, kembali ke zoom Kaltara
                             currentMapInstance.setView([3.4333, 117.6500], 9);
                         }
                         currentMapInstance.invalidateSize();
                     }
 
-                    // Render tombol filter peta
+                    /* Render tombol filter peta */
                     const mapCollections = speciesDetail.peta_persebaran || [];
-                    mapFilterButtonsContainer.innerHTML = ''; // Bersihkan tombol sebelumnya
+                    mapFilterButtonsContainer.innerHTML = ''; /* Bersihkan tombol sebelumnya */
 
                     if (mapCollections.length > 0) {
-                        // Tombol "Lihat Semua Peta"
+                        /* Tombol "Lihat Semua Peta" */
                         const allMapsButton = document.createElement('button');
                         allMapsButton.textContent = 'Lihat Semua Peta';
-                        allMapsButton.classList.add('active'); // Aktifkan secara default
+                        allMapsButton.classList.add('active'); /* Aktifkan secara default */
                         allMapsButton.addEventListener('click', () => {
-                            // Hapus active dari semua tombol lain
                             document.querySelectorAll('#mapFilterButtons button').forEach(btn => btn.classList.remove('active'));
                             allMapsButton.classList.add('active');
                             renderSpeciesMap(mapCollections);
                         });
                         mapFilterButtonsContainer.appendChild(allMapsButton);
 
-                        // Tombol untuk setiap peta individual
+                        /* Tombol untuk setiap peta individual */
                         mapCollections.forEach((mapGeoJSON, index) => {
                             const singleMapButton = document.createElement('button');
                             singleMapButton.textContent = `Peta ${index + 1}`;
                             singleMapButton.addEventListener('click', () => {
-                                // Hapus active dari semua tombol lain
                                 document.querySelectorAll('#mapFilterButtons button').forEach(btn => btn.classList.remove('active'));
                                 singleMapButton.classList.add('active');
-                                renderSpeciesMap([mapGeoJSON]); // Hanya render peta yang dipilih
+                                renderSpeciesMap([mapGeoJSON]);
                             });
                             mapFilterButtonsContainer.appendChild(singleMapButton);
                         });
@@ -1616,8 +1732,7 @@
                         mapFilterButtonsContainer.innerHTML = '<p class="text-gray-500">Tidak ada peta persebaran yang tersedia.</p>';
                     }
 
-
-                    // Update Source Data Table
+                    /* Update Source Data Table */
                     const sumberDataTableBody = document.getElementById('sumberDataTableBody');
                     sumberDataTableBody.innerHTML = `
                         <tr>
@@ -1638,44 +1753,41 @@
                         </tr>
                     `;
 
-                    // Render Taxonomy Sidebar
+                    /* Render Taxonomy Sidebar */
                     const sidebarNavRoot = document.getElementById('taxonomy-nav');
-                    sidebarNavRoot.innerHTML = ''; // Clear previous content
+                    sidebarNavRoot.innerHTML = ''; /* Clear previous content */
 
-                    // Add "Semua Invertebrata" special button/header
+                    /* Add "Semua Invertebrata" special button/header */
                     const allInvertebrataDiv = document.createElement('div');
-                    allInvertebrataDiv.className = `nav-item-header w-full text-left py-2 px-3 rounded-lg font-bold text-sm bg-[#1a4a2a] text-white cursor-pointer mb-2`; // Default to not active
+                    allInvertebrataDiv.className = `nav-item-header w-full text-left py-2 px-3 rounded-lg font-bold text-sm bg-[#1a4a2a] text-white cursor-pointer mb-2`;
                     allInvertebrataDiv.textContent = "Semua Invertebrata";
-                    allInvertebrataDiv.dataset.category = "Semua Invertebrata"; // Important for updateActiveTaxonomy
+                    allInvertebrataDiv.dataset.category = "Semua Invertebrata";
                     allInvertebrataDiv.addEventListener('click', () => {
                         window.location.href = `index.html?category=${encodeURIComponent("Semua Invertebrata")}`;
                     });
                     sidebarNavRoot.appendChild(allInvertebrataDiv);
 
-                    // Render the main taxonomy list
+                    /* Render the main taxonomy list */
                     const mainTaxonomyUl = document.createElement('ul');
                     sidebarNavRoot.appendChild(mainTaxonomyUl);
                     renderTaxonomy(taxonomyData["Semua Invertebrata"], mainTaxonomyUl, 0, ["Semua Invertebrata"]);
 
-                    // Dynamically activate sidebar item and update breadcrumbs based on current species
+                    /* Dynamically activate sidebar item and update breadcrumbs based on current species */
                     updateActiveTaxonomy(speciesDetail);
                     updateBreadcrumbs(speciesDetail.filum, speciesDetail.category, speciesDetail.scientificName);
 
-                    // Render peta saat tab "Peta Persebaran" diaktifkan
+                    /* Render peta saat tab "Peta Persebaran" diaktifkan */
                     document.querySelectorAll('.species-tabs button').forEach(button => {
                         button.addEventListener('click', (event) => {
-                            openTab(event, event.target.getAttribute('onclick').split("'")[1]); // Pastikan tab aktif berubah
+                            openTab(event, event.target.getAttribute('onclick').split("'")[1]);
 
                             if (event.currentTarget.textContent.includes('Peta Persebaran')) {
-                                // Beri sedikit penundaan untuk memastikan div peta terlihat dan ukurannya stabil
                                 setTimeout(() => {
-                                    renderSpeciesMap(speciesDetail.peta_persebaran); // Render semua peta spesies secara default
+                                    renderSpeciesMap(speciesDetail.peta_persebaran);
                                 }, 100);
                             } else {
-                                // Jika bukan tab peta, nonaktifkan peta atau bersihkan lapisan GeoJSON spesies
                                 if (speciesMap) {
-                                    speciesGeoJSONLayer.clearLayers(); // Bersihkan lapisan spesies saat tab diganti
-                                    // speciesMap.removeLayer(allRegionsLayer); // Opsional: hapus juga batas Kaltara jika tidak di tab peta
+                                    speciesGeoJSONLayer.clearLayers();
                                 }
                             }
                         });
@@ -1689,38 +1801,34 @@
                 }
 
                 renderAllComments();
-                // Klik tab pertama secara default saat DOMContentLoaded selesai
-                // Ini akan memicu render peta jika tab pertama adalah Peta Persebaran
-                // atau akan diinisialisasi saat tab Peta Persebaran diklik.
                 document.querySelector('.species-tabs button').click();
             });
 
-            // Mendapatkan referensi elemen searchInput dan searchIcon
+            /* Mendapatkan referensi elemen searchInput dan searchIcon */
             const searchInput = document.getElementById('searchInput');
             const searchIcon = document.getElementById('searchIcon');
 
-            // Fungsi untuk melakukan pencarian global dan mengarahkan ke index.html
+            /* Fungsi untuk melakukan pencarian global dan mengarahkan ke index.html */
             function performGlobalSearchFromDetail() {
                 const query = searchInput.value.trim();
                 if (query) {
                     sessionStorage.setItem('globalSearchQuery', query);
-                    window.location.href = 'index.html'; // Arahkan ke halaman utama
+                    window.location.href = 'index.html';
                 }
             }
 
-            // Event listener untuk tombol Enter pada input pencarian
+            /* Event listener untuk tombol Enter pada input pencarian */
             searchInput.addEventListener('keydown', function (event) {
                 if (event.key === 'Enter') {
-                    event.preventDefault(); // Mencegah form submit default
+                    event.preventDefault();
                     performGlobalSearchFromDetail();
                 }
             });
 
-            // Event listener untuk klik ikon pencarian
+            /* Event listener untuk klik ikon pencarian */
             searchIcon.addEventListener('click', function () {
                 performGlobalSearchFromDetail();
             });
-
         </script>
 
 </body>

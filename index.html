@@ -20,11 +20,28 @@
             color: white;
             padding: 1.5rem;
             border-radius: 0.75rem;
-            height: calc(100vh - 2rem);
-            overflow-y: auto;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             flex-shrink: 0;
+            width: 250px;
+            /* Default width for larger screens */
+            height: calc(100vh - 8rem);
+            /* Adjusted for header + main padding */
+            overflow-y: auto;
+            /* Enable vertical scrolling */
         }
+
+        /* Mobile adjustments for sidebar */
+        @media (max-width: 767px) {
+            .sidebar {
+                width: 100%;
+                /* Full width on small screens */
+                height: 250px;
+                /* Fixed height for scrollable sidebar on mobile */
+                margin-bottom: 1rem;
+                /* Space below sidebar when stacked */
+            }
+        }
+
 
         .main-content-area {
             background-color: white;
@@ -62,28 +79,33 @@
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
             transition: transform 0.2s;
             width: 100%;
+            /* Take full width of its grid cell */
             padding: 1rem;
-            /* cursor: pointer; REMOVED from general style */
         }
 
         .species-card:hover {
             transform: translateY(-5px);
         }
 
-        /* Style for clickable species cards (only Bekicot) */
         .species-card.clickable {
             cursor: pointer;
         }
-
 
         .search-input {
             border: 1px solid #cbd5e0;
             border-radius: 0.5rem;
             padding: 0.75rem 1rem;
-            width: 100%;
-            /* Ini akan di-override oleh w-xx di HTML */
             font-size: 1rem;
+            width: 100%;
+            /* Default to full width for mobile first */
+            outline: none;
+            transition: border-color 0.2s;
         }
+
+        .search-input:focus {
+            border-color: #1a4a2a;
+        }
+
 
         .btn-primary {
             background-color: #1a4a2a;
@@ -92,6 +114,7 @@
             border-radius: 0.5rem;
             font-weight: 600;
             transition: background-color 0.2s;
+            border: none;
         }
 
         .btn-primary:hover {
@@ -105,6 +128,7 @@
             border-radius: 0.5rem;
             font-weight: 500;
             transition: background-color 0.2s;
+            border: none;
         }
 
         .pagination-btn:hover {
@@ -115,31 +139,106 @@
             background-color: #1a4a2a;
             color: white;
         }
+
+        /* Mobile specific styles */
+        @media (max-width: 767px) {
+            header {
+                flex-direction: column;
+                /* Stack logo/title and search/profile vertically */
+                align-items: flex-start;
+                /* Align stacked items to the start */
+                padding-bottom: 1rem;
+            }
+
+            header>div:first-child {
+                /* Logo and title */
+                margin-bottom: 1rem;
+            }
+
+            header>div:last-child {
+                /* Search and profile */
+                width: 100%;
+                /* Take full width */
+                flex-direction: row;
+                /* Keep search and DA side-by-side */
+                justify-content: space-between;
+                /* Space them out */
+                align-items: center;
+            }
+
+            .search-input {
+                width: calc(100% - 3rem);
+                /* Adjust width to make space for DA avatar */
+            }
+
+            /* Main content area layout */
+            .flex-1.flex.p-4 {
+                /* This is the div holding sidebar and main content */
+                flex-direction: column;
+                /* Stack sidebar and main content */
+                gap: 1rem;
+                /* Use gap for spacing when stacked */
+                padding: 1rem;
+                /* Adjust padding for smaller screens */
+            }
+
+            .main-content-area {
+                padding: 1rem;
+            }
+
+            /* Adjusted grid for species cards on small screens */
+            #species-grid {
+                /* Target the ID directly for higher specificity */
+                grid-template-columns: repeat(2, 1fr);
+                /* Force 2 columns */
+            }
+
+            .species-card {
+                padding: 0.5rem;
+                /* Even smaller padding for cards */
+            }
+
+            .species-card img {
+                height: 80px;
+                /* Smaller image height for cards */
+            }
+
+            .species-card p {
+                font-size: 0.8rem;
+                /* Smaller text for card titles */
+            }
+
+            .species-card p:last-child {
+                /* Scientific name */
+                font-size: 0.7rem;
+                /* Even smaller text for scientific name */
+            }
+        }
     </style>
 </head>
 
 <body>
     <div class="min-h-screen flex flex-col">
-        <header class="bg-white shadow-md p-4 flex items-center justify-between">
+        <header class="bg-white shadow-md p-4 flex flex-col md:flex-row items-center justify-between">
             <div class="flex items-center space-x-2">
                 <img src="Logo.png" alt="Logo Invertebrata Kaltara" class="h-10 w-10">
                 <span class="text-2xl font-bold text-gray-800">Invertebrata Kaltara</span>
             </div>
-            <div class="flex items-center space-x-4">
-                <div class="relative w-80">
+            <div class="flex items-center space-x-4 w-full md:w-auto mt-4 md:mt-0">
+                <div class="relative w-full md:w-80">
                     <input type="text" placeholder="Cari spesies..." class="search-input pr-10" id="searchInput">
                     <i
                         class="fas fa-search absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400"></i>
                 </div>
                 <a href="#"
-                    class="relative w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-white font-semibold text-lg">
+                    class="relative w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-white font-semibold text-lg flex-shrink-0">
                     DA
                 </a>
             </div>
         </header>
 
-        <div class="flex-1 flex p-4 space-x-4">
-            <aside class="sidebar w-1/5">
+        <div class="flex-1 flex flex-col md:flex-row p-4 gap-4 md:space-x-4">
+            <aside class="sidebar w-full md:w-1/5">
                 <nav id="taxonomy-nav">
                 </nav>
             </aside>
@@ -150,7 +249,7 @@
                 </div>
 
                 <div class="overflow-y-auto pr-2 flex-grow">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4" id="species-grid">
+                    <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4" id="species-grid">
                     </div>
                 </div>
 
@@ -226,8 +325,7 @@
         const paginationControls = document.getElementById('pagination-controls');
         const breadcrumbsSpan = document.getElementById('breadcrumbs');
 
-        // searchInput sudah didefinisikan di luar DOMContentLoaded
-        // const searchInput = document.getElementById('searchInput');
+        const searchInput = document.getElementById('searchInput');
 
         let currentFilterCategory = "Semua Invertebrata";
         let currentSearchQuery = "";
@@ -241,24 +339,24 @@
          * @returns {Array<string>|null} - Jalur lengkap sebagai array string, atau null jika tidak ditemukan.
          */
         function findCategoryPath(data, targetCategory, currentPath = []) {
-            if (typeof data === 'string') { // If data is a string (leaf node)
+            if (typeof data === 'string') { /* If data is a string (leaf node) */
                 if (data === targetCategory) {
                     return [...currentPath, data];
                 }
-            } else if (Array.isArray(data)) { // If data is an array
-                // Check if targetCategory is directly in this array
+            } else if (Array.isArray(data)) { /* If data is an array */
+                /* Check if targetCategory is directly in this array */
                 if (data.includes(targetCategory)) {
                     return [...currentPath, targetCategory];
                 }
-                // Recurse into array elements if they are objects (shouldn't happen with current data structure)
+                /* Recurse into array elements if they are objects (shouldn't happen with current data structure) */
                 for (const item of data) {
                     const foundPath = findCategoryPath(item, targetCategory, currentPath);
                     if (foundPath) return foundPath;
                 }
-            } else if (typeof data === 'object' && data !== null) { // If data is an object
+            } else if (typeof data === 'object' && data !== null) { /* If data is an object */
                 for (const key in data) {
                     const newPath = [...currentPath, key];
-                    if (key === targetCategory) { // Check if the key itself is the target
+                    if (key === targetCategory) { /* Check if the key itself is the target */
                         return newPath;
                     }
                     const foundPath = findCategoryPath(data[key], targetCategory, newPath);
@@ -281,21 +379,21 @@
          */
         function isCategoryInSubtree(categoryToCheck, currentFilterCategory, fullTaxonomyTree) {
             if (currentFilterCategory === "Semua Invertebrata") {
-                return true; // If "Semua Invertebrata" is selected, all species pass
+                return true; /* If "Semua Invertebrata" is selected, all species pass */
             }
 
-            // Find the full path for the current filter category in the full taxonomy tree
+            /* Find the full path for the current filter category in the full taxonomy tree */
             const filterPath = findCategoryPath(fullTaxonomyTree, currentFilterCategory, []);
             if (!filterPath) {
-                // If the filter category itself isn't found in the taxonomy tree, it won't match anything
+                /* If the filter category itself isn't found in the taxonomy tree, it won't match anything */
                 return false;
             }
 
-            // Get the path for the species' category/filum
+            /* Get the path for the species' category/filum */
             const speciesPathForFilum = findCategoryPath(fullTaxonomyTree, categoryToCheck, []);
 
             if (speciesPathForFilum) {
-                // Check if the filterPath is a prefix of the speciesPathForFilum
+                /* Check if the filterPath is a prefix of the speciesPathForFilum */
                 if (filterPath.length <= speciesPathForFilum.length) {
                     let isPrefix = true;
                     for (let i = 0; i < filterPath.length; i++) {
@@ -312,12 +410,12 @@
             return false;
         }
 
-        // Fungsi untuk merender navigasi taksonomi
+        /* Fungsi untuk merender navigasi taksonomi */
         function renderTaxonomy(data, parentElement, level = 0, currentPath = []) {
             const ul = document.createElement('ul');
             ul.className = `space-y-1 ${level > 0 ? 'ml-4 border-l border-gray-600 pl-2' : ''}`;
 
-            // Ambil semua kunci (filum/kategori), urutkan secara alfabetis, lalu iterasi
+            /* Ambil semua kunci (filum/kategori), urutkan secara alfabetis, lalu iterasi */
             Object.keys(data).sort().forEach(key => {
                 const li = document.createElement('li');
                 const fullPathSegment = [...currentPath, key];
@@ -336,13 +434,6 @@
                     } else {
                         fontWeightClass = 'font-semibold';
                     }
-                } else if (Array.isArray(data[key])) {
-                    iconClass = 'fas fa-folder';
-                    if (level === 0) {
-                        fontWeightClass = 'font-bold';
-                    } else {
-                        fontWeightClass = 'font-semibold';
-                    }
                 } else {
                     iconClass = 'fas fa-sitemap';
                     fontWeightClass = 'font-normal';
@@ -350,7 +441,7 @@
 
                 const navItemDiv = document.createElement('div');
                 navItemDiv.className = `nav-item cursor-pointer text-sm py-2 px-3 rounded-lg ${fontWeightClass}`;
-                navItemDiv.style.paddingLeft = `${0.5 + level * 1}rem`; // Adjusted indentation
+                navItemDiv.style.paddingLeft = `${0.5 + level * 1}rem`; /* Adjusted indentation */
                 navItemDiv.innerHTML = `<i class="${iconClass} mr-2"></i> <span>${displayKey}</span>`;
                 navItemDiv.dataset.category = key;
 
@@ -360,7 +451,7 @@
                     filterAndRenderSpecies();
                     updateActiveTaxonomy(navItemDiv);
                     updateBreadcrumbs(fullPathSegment);
-                    updateSearchPlaceholder(); // Panggil fungsi ini saat filter berubah
+                    updateSearchPlaceholder(); /* Panggil fungsi ini saat filter berubah */
                 });
 
                 li.appendChild(navItemDiv);
@@ -375,7 +466,7 @@
 
                         const subNavItemDiv = document.createElement('div');
                         subNavItemDiv.className = `nav-item cursor-pointer text-xs py-1 px-3 rounded-lg`;
-                        subNavItemDiv.style.paddingLeft = `${0.5 + (level + 1) * 1}rem`; // Adjusted indentation
+                        subNavItemDiv.style.paddingLeft = `${0.5 + (level + 1) * 1}rem`; /* Adjusted indentation */
                         subNavItemDiv.innerHTML = `<i class="fas fa-arrow-right mr-2 text-xs"></i> <span>${subItemKey.replace(/_/g, ' ')}</span>`;
                         subNavItemDiv.dataset.category = subItemKey;
 
@@ -385,7 +476,7 @@
                             filterAndRenderSpecies();
                             updateActiveTaxonomy(subNavItemDiv);
                             updateBreadcrumbs(subItemFullPathSegment);
-                            updateSearchPlaceholder(); // Panggil fungsi ini saat filter berubah
+                            updateSearchPlaceholder(); /* Panggil fungsi ini saat filter berubah */
                         });
                         subLi.appendChild(subNavItemDiv);
                         ul.appendChild(subLi);
@@ -395,18 +486,18 @@
             parentElement.appendChild(ul);
         }
 
-        // Fungsi untuk memperbarui item taksonomi yang aktif
+        /* Fungsi untuk memperbarui item taksonomi yang aktif */
         function updateActiveTaxonomy(activeElement) {
             const allNavItems = document.querySelectorAll('#taxonomy-nav .nav-item');
             allNavItems.forEach(item => item.classList.remove('active'));
             if (activeElement) {
                 activeElement.classList.add('active');
-                // Scroll into view if the element is not visible
+                /* Scroll into view if the element is not visible */
                 activeElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }
         }
 
-        // Fungsi untuk merender kartu spesies
+        /* Fungsi untuk merender kartu spesies */
         function renderSpeciesCards(speciesToRender) {
             speciesGrid.innerHTML = '';
             const startIndex = (currentPage - 1) * itemsPerPage;
@@ -431,9 +522,9 @@
                 `;
                 speciesGrid.appendChild(card);
 
-                // Kondisi khusus: hanya tambahkan event listener dan gaya pointer jika itu Bekicot
+                /* Kondisi khusus: hanya tambahkan event listener dan gaya pointer jika itu Bekicot */
                 if (species.name === "Bekicot") {
-                    card.classList.add('clickable'); // Add a class for specific styling if needed
+                    card.classList.add('clickable'); /* Add a class for specific styling if needed */
                     card.addEventListener('click', () => {
                         window.location.href = `detailSpesiesLogin.html?id=${species.id}`;
                     });
@@ -441,7 +532,7 @@
             });
         }
 
-        // Fungsi untuk merender kontrol paginasi
+        /* Fungsi untuk merender kontrol paginasi */
         function renderPagination(totalItems) {
             paginationControls.innerHTML = '';
             const totalPages = Math.ceil(totalItems / itemsPerPage);
@@ -486,7 +577,7 @@
             paginationControls.appendChild(nextButton);
         }
 
-        // Fungsi untuk memfilter spesies berdasarkan kategori dan pencarian
+        /* Fungsi untuk memfilter spesies berdasarkan kategori dan pencarian */
         function filterAndRenderSpecies() {
             let filteredSpecies = speciesData.filter(species => {
                 let passesCategoryFilter = false;
@@ -506,7 +597,7 @@
                 return passesCategoryFilter && matchesSearch;
             });
 
-            // --- PENTING: Lakukan pengurutan di sini setelah pemfilteran ---
+            /* --- PENTING: Lakukan pengurutan di sini setelah pemfilteran --- */
             filteredSpecies.sort((a, b) => {
                 const nameA = a.name.toLowerCase();
                 const nameB = b.name.toLowerCase();
@@ -519,7 +610,7 @@
             renderPagination(filteredSpecies.length);
         }
 
-        // --- FUNGSI UNTUK MENGUPDATE PLACEHOLDER PENCARIAN ---
+        /* --- FUNGSI UNTUK MENGUPDATE PLACEHOLDER PENCARIAN --- */
         function updateSearchPlaceholder() {
             let placeholderText = "Cari spesies...";
             if (currentFilterCategory && currentFilterCategory !== "Semua Invertebrata") {
@@ -528,7 +619,7 @@
             searchInput.placeholder = placeholderText;
         }
 
-        // Fungsi untuk memperbarui breadcrumbs
+        /* Fungsi untuk memperbarui breadcrumbs */
         function updateBreadcrumbs(currentPathArray = null) {
             breadcrumbsSpan.innerHTML = '';
             let path = currentPathArray;
@@ -567,7 +658,7 @@
                         currentPage = 1;
                         filterAndRenderSpecies();
                         updateBreadcrumbs(newFilterPath);
-                        updateSearchPlaceholder(); // Panggil fungsi ini saat breadcrumb diklik
+                        updateSearchPlaceholder(); /* Panggil fungsi ini saat breadcrumb diklik */
                         const navItemToActivate = document.querySelector(`#taxonomy-nav .nav-item[data-category="${currentFilterCategory}"]`);
                         updateActiveTaxonomy(navItemToActivate);
                     });
@@ -577,56 +668,56 @@
         }
 
 
-        // Event listener for search input
+        /* Event listener for search input */
         searchInput.addEventListener('input', (event) => {
             currentSearchQuery = event.target.value;
             currentPage = 1;
             filterAndRenderSpecies();
         });
 
-        // Initialize the app when DOM is loaded
+        /* Initialize the app when DOM is loaded */
         document.addEventListener('DOMContentLoaded', () => {
-            taxonomyNav.innerHTML = ''; // Clear existing content
-            // Render the full taxonomy, starting from the "Semua Invertebrata" root
+            taxonomyNav.innerHTML = ''; /* Clear existing content */
+            /* Render the full taxonomy, starting from the "Semua Invertebrata" root */
             renderTaxonomy(taxonomyData, taxonomyNav);
 
-            // --- LOGIKA PEMBACAAN SEARCH QUERY DARI sessionStorage ---
+            /* --- LOGIKA PEMBACAAN SEARCH QUERY DARI sessionStorage --- */
             const storedSearchQuery = sessionStorage.getItem('globalSearchQuery');
             if (storedSearchQuery) {
-                searchInput.value = storedSearchQuery; // Isi input pencarian
-                currentSearchQuery = storedSearchQuery; // Set currentSearchQuery
-                sessionStorage.removeItem('globalSearchQuery'); // Hapus dari sessionStorage setelah digunakan
+                searchInput.value = storedSearchQuery; /* Isi input pencarian */
+                currentSearchQuery = storedSearchQuery; /* Set currentSearchQuery */
+                sessionStorage.removeItem('globalSearchQuery'); /* Hapus dari sessionStorage setelah digunakan */
                 console.log('Search query loaded from sessionStorage:', storedSearchQuery);
             }
-            // --- END LOGIKA PEMBACAAN SEARCH QUERY ---
+            /* --- END LOGIKA PEMBACAAN SEARCH QUERY --- */
 
-            // --- NEW LOGIC: Check URL for category to pre-select and scroll ---
+            /* --- NEW LOGIC: Check URL for category to pre-select and scroll --- */
             const urlParams = new URLSearchParams(window.location.search);
-            const initialCategoryFromURL = urlParams.get('category'); // e.g., index.html?category=Gastropoda
+            const initialCategoryFromURL = urlParams.get('category'); /* e.g., index.html?category=Gastropoda */
 
             if (initialCategoryFromURL) {
                 currentFilterCategory = initialCategoryFromURL;
-                // Find the element and activate it
+                /* Find the element and activate it */
                 const navItemToActivate = document.querySelector(`.nav-item[data-category="${currentFilterCategory}"]`);
                 if (navItemToActivate) {
-                    updateActiveTaxonomy(navItemToActivate); // This will add 'active' class and scroll
+                    updateActiveTaxonomy(navItemToActivate); /* This will add 'active' class and scroll */
                     const categoryPath = findCategoryPath(taxonomyData, currentFilterCategory, []);
                     if (categoryPath) {
-                        updateBreadcrumbs(categoryPath); // Update breadcrumbs based on URL category
+                        updateBreadcrumbs(categoryPath); /* Update breadcrumbs based on URL category */
                     }
                 }
             } else {
-                // If no category in URL, set initial active taxonomy item to "Semua Invertebrata"
+                /* If no category in URL, set initial active taxonomy item to "Semua Invertebrata" */
                 const initialActiveNav = document.querySelector(`.nav-item[data-category="${currentFilterCategory}"]`);
                 if (initialActiveNav) {
                     initialActiveNav.classList.add('active');
                 }
-                updateBreadcrumbs([currentFilterCategory]); // Initial breadcrumbs
+                updateBreadcrumbs([currentFilterCategory]); /* Initial breadcrumbs */
             }
-            // --- END NEW LOGIC ---
+            /* --- END NEW LOGIC --- */
 
-            filterAndRenderSpecies(); // Initial render of species cards
-            updateSearchPlaceholder(); // Panggil fungsi ini saat inisialisasi awal
+            filterAndRenderSpecies(); /* Initial render of species cards */
+            updateSearchPlaceholder(); /* Panggil fungsi ini saat inisialisasi awal */
         });
     </script>
 </body>
