@@ -15,30 +15,32 @@
             background-color: #f0f2f5;
         }
 
+        /* Mengubah warna latar belakang sidebar menjadi #15803D (jawel) */
         .sidebar {
-            background-color: #1a4a2a;
+            background-color: #15803D;
+            /* Warna Jawel */
             color: white;
             padding: 1.5rem;
             border-radius: 0.75rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             flex-shrink: 0;
             width: 250px;
-            /* Default width for larger screens */
+            /* Lebar default untuk layar yang lebih besar */
             height: calc(100vh - 8rem);
-            /* Adjusted for header + main padding */
+            /* Disesuaikan untuk header + padding utama */
             overflow-y: auto;
-            /* Enable vertical scrolling */
+            /* Mengaktifkan pengguliran vertikal */
         }
 
-        /* Mobile adjustments for sidebar */
+        /* Penyesuaian seluler untuk sidebar */
         @media (max-width: 767px) {
             .sidebar {
                 width: 100%;
-                /* Full width on small screens */
+                /* Lebar penuh di layar kecil */
                 height: 250px;
-                /* Fixed height for scrollable sidebar on mobile */
+                /* Tinggi tetap untuk sidebar yang dapat digulir di perangkat seluler */
                 margin-bottom: 1rem;
-                /* Space below sidebar when stacked */
+                /* Jarak di bawah sidebar saat ditumpuk */
             }
         }
 
@@ -62,12 +64,14 @@
             align-items: center;
         }
 
+        /* Mengubah warna hover item navigasi menjadi #116631 */
         .nav-item:hover {
-            background-color: #2a6a3a;
+            background-color: #116631;
         }
 
+        /* Mengubah warna aktif item navigasi menjadi #116631 */
         .nav-item.active {
-            background-color: #2a6a3a;
+            background-color: #116631;
             font-weight: 600;
         }
 
@@ -79,7 +83,7 @@
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
             transition: transform 0.2s;
             width: 100%;
-            /* Take full width of its grid cell */
+            /* Mengambil lebar penuh dari sel gridnya */
             padding: 1rem;
         }
 
@@ -97,7 +101,7 @@
             padding: 0.75rem 1rem;
             font-size: 1rem;
             width: 100%;
-            /* Default to full width for mobile first */
+            /* Default ke lebar penuh untuk mobile first */
             outline: none;
             transition: border-color 0.2s;
         }
@@ -140,82 +144,82 @@
             color: white;
         }
 
-        /* Mobile specific styles */
+        /* Gaya khusus seluler */
         @media (max-width: 767px) {
             header {
                 flex-direction: column;
-                /* Stack logo/title and search/profile vertically */
+                /* Tumpuk logo/judul dan pencarian/profil secara vertikal */
                 align-items: flex-start;
-                /* Align stacked items to the start */
+                /* Sejajarkan item yang ditumpuk ke awal */
                 padding-bottom: 1rem;
             }
 
             header>div:first-child {
-                /* Logo and title */
+                /* Logo dan judul */
                 margin-bottom: 1rem;
             }
 
             header>div:last-child {
-                /* Search and profile */
+                /* Pencarian dan profil */
                 width: 100%;
-                /* Take full width */
+                /* Mengambil lebar penuh */
                 flex-direction: row;
-                /* Keep search and DA side-by-side */
+                /* Pertahankan pencarian dan DA berdampingan */
                 justify-content: space-between;
-                /* Space them out */
+                /* Beri jarak di antara mereka */
                 align-items: center;
             }
 
             .search-input {
                 width: calc(100% - 3rem);
-                /* Adjust width to make space for DA avatar */
+                /* Sesuaikan lebar untuk memberi ruang bagi avatar DA */
             }
 
-            /* Main content area layout */
+            /* Tata letak area konten utama */
             .flex-1.flex.p-4 {
-                /* This is the div holding sidebar and main content */
+                /* Ini adalah div yang menampung sidebar dan konten utama */
                 flex-direction: column;
-                /* Stack sidebar and main content */
+                /* Tumpuk sidebar dan konten utama */
                 gap: 1rem;
-                /* Use gap for spacing when stacked */
+                /* Gunakan celah untuk jarak saat ditumpuk */
                 padding: 1rem;
-                /* Adjust padding for smaller screens */
+                /* Sesuaikan padding untuk layar yang lebih kecil */
             }
 
             .main-content-area {
                 padding: 1rem;
             }
 
-            /* Adjusted grid for species cards on small screens */
+            /* Kisi yang disesuaikan untuk kartu spesies di layar kecil */
             #species-grid {
-                /* Target the ID directly for higher specificity */
+                /* Target ID secara langsung untuk spesifisitas yang lebih tinggi */
                 grid-template-columns: repeat(2, 1fr);
-                /* Force 2 columns */
+                /* Paksa 2 kolom */
             }
 
             .species-card {
                 padding: 0.5rem;
-                /* Even smaller padding for cards */
+                /* Padding yang lebih kecil lagi untuk kartu */
             }
 
             .species-card img {
                 height: 80px;
-                /* Smaller image height for cards */
+                /* Tinggi gambar yang lebih kecil untuk kartu */
             }
 
             .species-card p {
                 font-size: 0.8rem;
-                /* Smaller text for card titles */
+                /* Teks yang lebih kecil untuk judul kartu */
             }
 
             .species-card p:last-child {
-                /* Scientific name */
+                /* Nama ilmiah */
                 font-size: 0.7rem;
-                /* Even smaller text for scientific name */
+                /* Teks yang lebih kecil lagi untuk nama ilmiah */
             }
         }
 
-        /* Style for the new label */
+        /* Gaya untuk label baru */
         .new-label {
             background-color: #F97A00;
             color: white;
@@ -225,7 +229,7 @@
             border-radius: 0.3rem;
             margin-left: 0.5rem;
             vertical-align: middle;
-            /* Align with text baseline */
+            /* Sejajarkan dengan garis dasar teks */
         }
     </style>
 </head>
@@ -448,7 +452,8 @@
         /* Fungsi untuk merender navigasi taksonomi */
         function renderTaxonomy(data, parentElement, level = 0, currentPath = []) {
             const ul = document.createElement('ul');
-            ul.className = `space-y-1 ${level > 0 ? 'ml-4 border-l border-gray-600 pl-2' : ''}`;
+            // Mengubah warna border di sidebar agar sesuai dengan warna Jawel
+            ul.className = `space-y-1 ${level > 0 ? 'ml-4 border-l border-gray-400 pl-2' : ''}`;
 
             Object.keys(data).sort().forEach(key => {
                 const li = document.createElement('li');
@@ -553,7 +558,7 @@
             allNavItems.forEach(item => item.classList.remove('active'));
             if (activeElement) {
                 activeElement.classList.add('active');
-                /* Scroll into view if the element is not visible */
+                /* Gulir ke tampilan jika elemen tidak terlihat */
                 activeElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }
         }
@@ -585,7 +590,7 @@
 
                 /* Kondisi khusus: hanya tambahkan event listener dan gaya pointer jika itu Bekicot */
                 if (species.name === "Bekicot") {
-                    card.classList.add('clickable'); /* Add a class for specific styling if needed */
+                    card.classList.add('clickable'); /* Tambahkan kelas untuk gaya tertentu jika diperlukan */
                     card.addEventListener('click', () => {
                         window.location.href = `detailSpesiesLogin.html?id=${species.id}`;
                     });
@@ -721,14 +726,14 @@
         }
 
 
-        /* Event listener for search input */
+        /* Event listener untuk input pencarian */
         searchInput.addEventListener('input', (event) => {
             currentSearchQuery = event.target.value;
             currentPage = 1;
             filterAndRenderSpecies();
         });
 
-        /* Initialize the app when DOM is loaded */
+        /* Inisialisasi aplikasi saat DOM dimuat */
         document.addEventListener('DOMContentLoaded', () => {
             taxonomyNav.innerHTML = '';
             renderTaxonomy(taxonomyData, taxonomyNav);

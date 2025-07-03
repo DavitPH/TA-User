@@ -118,7 +118,8 @@
 
         /* Sidebar: Default for larger screens and handles responsive stacking for mobile */
         .sidebar {
-            background-color: #1a4a2a;
+            background-color: #15803D;
+            /* Warna Jawel */
             color: white;
             padding: 1.5rem;
             border-radius: 0.75rem;
@@ -154,12 +155,14 @@
             font-weight: bold;
         }
 
+        /* Mengubah warna hover item navigasi header menjadi #116631 */
         .sidebar .nav-item-header:hover {
-            background-color: #2a6a3a;
+            background-color: #116631;
         }
 
+        /* Mengubah warna aktif item navigasi header menjadi #116631 */
         .sidebar .nav-item-header.active {
-            background-color: #2a6a3a;
+            background-color: #116631;
         }
 
         .sidebar .nav-list-item {
@@ -170,12 +173,14 @@
             border-radius: 0.5rem;
         }
 
+        /* Mengubah warna hover item navigasi list menjadi #116631 */
         .sidebar .nav-list-item:hover {
-            background-color: #2a6a3a;
+            background-color: #116631;
         }
 
+        /* Mengubah warna aktif item navigasi list menjadi #116631 */
         .sidebar .nav-list-item.active {
-            background-color: #2a6a3a;
+            background-color: #116631;
             font-weight: 600;
         }
 
@@ -1807,7 +1812,7 @@
 
                 /* Tambahkan tombol/header khusus "Semua Invertebrata" */
                 const allInvertebrataDiv = document.createElement('div');
-                allInvertebrataDiv.className = `nav-item-header w-full text-left py-2 px-3 rounded-lg font-bold text-sm bg-[#1a4a2a] text-white cursor-pointer mb-2`;
+                allInvertebrataDiv.className = `nav-item-header w-full text-left py-2 px-3 rounded-lg font-bold text-sm bg-[#15803D] text-white cursor-pointer mb-2`; /* Warna Jawel */
                 allInvertebrataDiv.textContent = "Semua Invertebrata";
                 allInvertebrataDiv.dataset.category = "Semua Invertebrata";
                 allInvertebrataDiv.addEventListener('click', () => {
