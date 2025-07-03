@@ -136,7 +136,7 @@
         }
 
         .pagination-btn.active {
-            background-color: #1a4a2a;
+            background-color: #F97A00;
             color: white;
         }
 
@@ -213,6 +213,19 @@
                 font-size: 0.7rem;
                 /* Even smaller text for scientific name */
             }
+        }
+
+        /* Style for the new label */
+        .new-label {
+            background-color: #F97A00;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.1rem 0.4rem;
+            border-radius: 0.3rem;
+            margin-left: 0.5rem;
+            vertical-align: middle;
+            /* Align with text baseline */
         }
     </style>
 </head>
@@ -423,6 +436,7 @@
 
                 let fontWeightClass = 'font-normal';
                 let iconClass = '';
+                let contentHTML = `<span>${displayKey}</span>`; // Default content
 
                 if (level === 0 && key === "Semua Invertebrata") {
                     iconClass = 'fas fa-globe';
@@ -435,15 +449,21 @@
                         fontWeightClass = 'font-semibold';
                     }
                 } else {
-                    iconClass = 'fas fa-sitemap';
+                    iconClass = 'fas fa-arrow-right'; // Corrected icon as per image
                     fontWeightClass = 'font-normal';
+
+                    // Add "NEW" label specifically for Gastropoda under Mollusca
+                    if (key === "Gastropoda" && fullPathSegment.includes("Mollusca")) {
+                        contentHTML = `<span>${displayKey} <span class="new-label">NEW</span></span>`;
+                    }
                 }
 
                 const navItemDiv = document.createElement('div');
                 navItemDiv.className = `nav-item cursor-pointer text-sm py-2 px-3 rounded-lg ${fontWeightClass}`;
                 navItemDiv.style.paddingLeft = `${0.5 + level * 1}rem`; /* Adjusted indentation */
-                navItemDiv.innerHTML = `<i class="${iconClass} mr-2"></i> <span>${displayKey}</span>`;
+                navItemDiv.innerHTML = `<i class="${iconClass} mr-2"></i> ${contentHTML}`; // Use contentHTML here
                 navItemDiv.dataset.category = key;
+
 
                 navItemDiv.addEventListener('click', () => {
                     currentFilterCategory = key;
@@ -463,11 +483,18 @@
                     data[key].sort().forEach(subItemKey => {
                         const subLi = document.createElement('li');
                         const subItemFullPathSegment = [...fullPathSegment, subItemKey];
+                        let subItemContentHTML = `<span>${subItemKey.replace(/_/g, ' ')}</span>`;
 
                         const subNavItemDiv = document.createElement('div');
                         subNavItemDiv.className = `nav-item cursor-pointer text-xs py-1 px-3 rounded-lg`;
                         subNavItemDiv.style.paddingLeft = `${0.5 + (level + 1) * 1}rem`; /* Adjusted indentation */
-                        subNavItemDiv.innerHTML = `<i class="fas fa-arrow-right mr-2 text-xs"></i> <span>${subItemKey.replace(/_/g, ' ')}</span>`;
+
+                        // This is for sub-items like Gastropoda within Mollusca
+                        if (subItemKey === "Gastropoda" && subItemFullPathSegment.includes("Mollusca")) {
+                            subItemContentHTML = `<span>${subItemKey.replace(/_/g, ' ')} <span class="new-label">NEW</span></span>`;
+                        }
+
+                        subNavItemDiv.innerHTML = `<i class="fas fa-arrow-right mr-2 text-xs"></i> ${subItemContentHTML}`;
                         subNavItemDiv.dataset.category = subItemKey;
 
                         subNavItemDiv.addEventListener('click', () => {
