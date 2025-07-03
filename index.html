@@ -275,18 +275,24 @@
     <script>
         const taxonomyData = {
             "Semua Invertebrata": {
-                "Protozoa": ["Amoebozoa", "Ciliophora (SAR)", "Excavata", "Opisthokonta"],
+                // Mengubah Protozoa menjadi array langsung dari kelas-kelasnya
+                "Protozoa": [
+                    "Amoebozoa",
+                    "SAR (Stramenopiles, Alveolata, Rhizaria)",
+                    "Excavata",
+                    "Opisthokonta (terkait hewan dan jamur)"
+                ],
                 "Cnidaria": ["Hydrozoa", "Scyphozoa", "Cubozoa", "Anthozoa"],
                 "Ctenophora": ["Tentaculata"],
                 "Echinodermata": ["Asteroidea", "Ophiuroidea", "Echinoidea", "Holothuroidea", "Crinoidea"],
-                "Platyhelminthes": ["Turbellaria", "Trematoda", "Cestoda", "Monogenea"],
+                "Plathyhelminthes": ["Turbellaria", "Trematoda", "Cestoda", "Monogenea"],
                 "Nematoda": ["Secernentea"],
                 "Rotifera": ["Bdelloidea"],
-                "Nematomorpha": ["Gordioidea"],
+                "Nematomorpha": ["Gordioida"],
                 "Gastrotricha": ["Chaetonotida"],
                 "Kinorhyncha": ["Cyclorhagida"],
                 "Annelida": ["Polychaeta", "Oligochaeta", "Hirudinea"],
-                "Mollusca": ["Gastropoda", "Bivalvia", "Cephalopoda", "Polyplacophora", "Scaphopophora", "Monoplacophora", "Aplacophora"],
+                "Mollusca": ["Gastropoda", "Bivalvia", "Cephalopoda", "Polyplacophora", "Scaphopoda", "Monoplacophora", "Aplacophora"],
                 "Arthropoda": {
                     "Chelicerata": ["Arachnida", "Merostomata", "Pycnogonida", "Xiphosura"],
                     "Myriapoda": ["Chilopoda", "Diplopoda", "Pauropoda", "Symphyla"],
@@ -298,7 +304,7 @@
 
         const speciesData = [
             { id: 1, name: "Amoeba", scientificName: "Amoeba proteus", imageUrl: "images/Amoeba.jpg", filum: "Protozoa", category: "Amoebozoa" },
-            { id: 2, name: "Paramecium", scientificName: "Paramecium caudatum", imageUrl: "images/Paramecium.jpg", filum: "Protozoa", category: "Ciliophora (SAR)" },
+            { id: 2, name: "Paramecium", scientificName: "Paramecium caudatum", imageUrl: "images/Paramecium.jpg", filum: "Protozoa", category: "SAR (Stramenopiles, Alveolata, Rhizaria)" },
             { id: 3, name: "Ubur-ubur Bulan", scientificName: "Aurelia aurita", imageUrl: "images/Ubur-ubur Bulan.jpg", filum: "Cnidaria", category: "Scyphozoa" },
             { id: 4, name: "Anemon Laut", scientificName: "Actiniaria", imageUrl: "images/Anemon Laut.jpg", filum: "Cnidaria", category: "Anthozoa" },
             { id: 5, name: "Karang Otak", scientificName: "Favia spp.", imageUrl: "images/Karang Otak.jpg", filum: "Cnidaria", category: "Anthozoa" },
@@ -315,19 +321,19 @@
             { id: 16, name: "Gurita Cincin Biru", scientificName: "Hapalochlaena spp.", imageUrl: "images/Gurita Cincin Biru.jpg", filum: "Mollusca", category: "Cephalopoda" },
             { id: 17, name: "Cumi-cumi", scientificName: "Teuthida", imageUrl: "images/Cumi-cumi.jpg", filum: "Mollusca", category: "Cephalopoda" },
             { id: 18, name: "Nautilus", scientificName: "Nautilus.jpg", imageUrl: "images/Nautilus.jpg", filum: "Mollusca", category: "Cephalopoda" },
-            { id: 19, name: "Laba-laba Jaring Laba-laba", scientificName: "Araneidae", imageUrl: "images/Laba-laba Jaring.jpg", filum: "Arthropoda", category: "Arachnida" },
-            { id: 20, name: "Kala Jengking", scientificName: "Scorpiones", imageUrl: "images/Kalajengking.jpg", filum: "Arthropoda", category: "Arachnida" },
-            { id: 21, name: "Lipan (Kelabang)", scientificName: "Chilopoda", imageUrl: "images/Lipan (Kelabang).jpg", filum: "Arthropoda", category: "Chilopoda" },
-            { id: 22, name: "Kaki Seribu", scientificName: "Diplopoda", imageUrl: "images/Kaki Seribu.jpg", filum: "Arthropoda", category: "Diplopoda" },
-            { id: 23, name: "Kepiting Bakau", scientificName: "Scylla serrata", imageUrl: "images/Kepiting Bakau.jpg", filum: "Arthropoda", category: "Malacostraca" },
-            { id: 24, name: "Udang Windu", scientificName: "Penaeus monodon", imageUrl: "images/Udang Windu.jpg", filum: "Arthropoda", category: "Malacostraca" },
-            { id: 25, name: "Kupu-kupu Morpho", scientificName: "Morpho menelaus", imageUrl: "images/Kupu-kupu Morpho.webp", filum: "Arthropoda", category: "Insecta" },
-            { id: 26, name: "Semut Merah", scientificName: "Solenopsis invicta", imageUrl: "images/Semut Merah.jpg", filum: "Arthropoda", category: "Insecta" },
-            { id: 27, name: "Capung", scientificName: "Odonata", imageUrl: "images/Capung.jpg", filum: "Arthropoda", category: "Insecta" },
-            { id: 28, name: "Lebah Madu", scientificName: "Apis mellifera", imageUrl: "images/Lebah Madu.jpg", filum: "Arthropoda", category: "Insecta" },
-            { id: 29, name: "Belalang", scientificName: "Caelifera", imageUrl: "images/Belalang.jpg", filum: "Arthropoda", category: "Insecta" },
-            { id: 30, name: "Lalat Rumah", scientificName: "Musca domestica", imageUrl: "images/Lalat Rumah.jpg", filum: "Arthropoda", category: "Insecta" },
-            { id: 31, name: "Nyamuk Aedes aegypti", scientificName: "Aedes aegypti", imageUrl: "images/Nyamuk Aedes aegypti.webp", filum: "Arthropoda", category: "Insecta" }
+            { id: 19, name: "Laba-laba Jaring Laba-laba", scientificName: "Araneidae", imageUrl: "images/Laba-laba Jaring.jpg", filum: "Arthropoda", subFilum: "Chelicerata", category: "Arachnida" },
+            { id: 20, name: "Kala Jengking", scientificName: "Scorpiones", imageUrl: "images/Kalajengking.jpg", filum: "Arthropoda", subFilum: "Chelicerata", category: "Arachnida" },
+            { id: 21, name: "Lipan (Kelabang)", scientificName: "Chilopoda", imageUrl: "images/Lipan (Kelabang).jpg", filum: "Arthropoda", subFilum: "Myriapoda", category: "Chilopoda" },
+            { id: 22, name: "Kaki Seribu", scientificName: "Diplopoda", imageUrl: "images/Kaki Seribu.jpg", filum: "Arthropoda", subFilum: "Myriapoda", category: "Diplopoda" },
+            { id: 23, name: "Kepiting Bakau", scientificName: "Scylla serrata", imageUrl: "images/Kepiting Bakau.jpg", filum: "Arthropoda", subFilum: "Crustacea", category: "Malacostraca" },
+            { id: 24, name: "Udang Windu", scientificName: "Penaeus monodon", imageUrl: "images/Udang Windu.jpg", filum: "Arthropoda", subFilum: "Crustacea", category: "Malacostraca" },
+            { id: 25, name: "Kupu-kupu Morpho", scientificName: "Morpho menelaus", imageUrl: "images/Kupu-kupu Morpho.webp", filum: "Arthropoda", subFilum: "Hexapoda", category: "Insecta" },
+            { id: 26, name: "Semut Merah", scientificName: "Solenopsis invicta", imageUrl: "images/Semut Merah.jpg", filum: "Arthropoda", subFilum: "Hexapoda", category: "Insecta" },
+            { id: 27, name: "Capung", scientificName: "Odonata", imageUrl: "images/Capung.jpg", filum: "Arthropoda", subFilum: "Hexapoda", category: "Insecta" },
+            { id: 28, name: "Lebah Madu", scientificName: "Apis mellifera", imageUrl: "images/Lebah Madu.jpg", filum: "Arthropoda", subFilum: "Hexapoda", category: "Insecta" },
+            { id: 29, name: "Belalang", scientificName: "Caelifera", imageUrl: "images/Belalang.jpg", filum: "Arthropoda", subFilum: "Hexapoda", category: "Insecta" },
+            { id: 30, name: "Lalat Rumah", scientificName: "Musca domestica", imageUrl: "images/Lalat Rumah.jpg", filum: "Arthropoda", subFilum: "Hexapoda", category: "Insecta" },
+            { id: 31, name: "Nyamuk Aedes aegypti", scientificName: "Aedes aegypti", imageUrl: "images/Nyamuk Aedes aegypti.webp", filum: "Arthropoda", subFilum: "Hexapoda", category: "Insecta" }
         ];
 
         let currentPage = 1;
@@ -385,41 +391,57 @@
         /**
          * Fungsi untuk memeriksa apakah suatu kategori (categoryToCheck) adalah bagian dari subtree dari
          * kategori filter saat ini (currentFilterCategory) dalam pohon taksonomi penuh.
-         * @param {string} categoryToCheck - Kategori spesies (filum atau kelas) yang ingin diperiksa.
+         * @param {string} speciesFilum - Filum spesies.
+         * @param {string|null} speciesSubFilum - Subfilum spesies (jika ada).
+         * @param {string} speciesCategory - Kategori/Kelas spesies.
          * @param {string} currentFilterCategory - Kategori yang sedang dipilih di sidebar.
          * @param {object} fullTaxonomyTree - Pohon taksonomi lengkap (biasanya taxonomyData["Semua Invertebrata"]).
-         * @returns {boolean} - True jika categoryToCheck adalah turunan atau sama dengan currentFilterCategory, false jika tidak.
+         * @returns {boolean} - True jika speciesCategory adalah turunan atau sama dengan currentFilterCategory, false jika tidak.
          */
-        function isCategoryInSubtree(categoryToCheck, currentFilterCategory, fullTaxonomyTree) {
+        function isCategoryInSubtree(speciesFilum, speciesSubFilum, speciesCategory, currentFilterCategory, fullTaxonomyTree) {
             if (currentFilterCategory === "Semua Invertebrata") {
-                return true; /* If "Semua Invertebrata" is selected, all species pass */
+                return true;
             }
 
-            /* Find the full path for the current filter category in the full taxonomy tree */
             const filterPath = findCategoryPath(fullTaxonomyTree, currentFilterCategory, []);
             if (!filterPath) {
-                /* If the filter category itself isn't found in the taxonomy tree, it won't match anything */
                 return false;
             }
 
-            /* Get the path for the species' category/filum */
-            const speciesPathForFilum = findCategoryPath(fullTaxonomyTree, categoryToCheck, []);
+            // Bangun path lengkap untuk spesies dari filum, subfilum, dan kategori/kelasnya
+            let speciesPath = [];
+            // Mulai dari filum
+            if (fullTaxonomyTree[speciesFilum]) {
+                speciesPath.push(speciesFilum);
+                let currentLevel = fullTaxonomyTree[speciesFilum];
 
-            if (speciesPathForFilum) {
-                /* Check if the filterPath is a prefix of the speciesPathForFilum */
-                if (filterPath.length <= speciesPathForFilum.length) {
-                    let isPrefix = true;
-                    for (let i = 0; i < filterPath.length; i++) {
-                        if (filterPath[i] !== speciesPathForFilum[i]) {
-                            isPrefix = false;
-                            break;
-                        }
-                    }
-                    if (isPrefix) {
-                        return true;
-                    }
+                // Jika ada subfilum (hanya untuk Arthropoda)
+                if (speciesFilum === "Arthropoda" && speciesSubFilum && typeof currentLevel === 'object' && !Array.isArray(currentLevel) && currentLevel[speciesSubFilum]) {
+                    speciesPath.push(speciesSubFilum);
+                    currentLevel = currentLevel[speciesSubFilum];
+                }
+
+                // Jika kategori spesies adalah kunci di level saat ini (misal Kelas langsung di Filum atau Supergrup di Protozoa)
+                // Atau jika itu adalah item langsung dalam array (seperti kelas di Cnidaria atau Protozoa)
+                if (typeof currentLevel === 'object' && !Array.isArray(currentLevel) && currentLevel[speciesCategory]) {
+                    speciesPath.push(speciesCategory);
+                } else if (Array.isArray(currentLevel) && currentLevel.includes(speciesCategory)) {
+                    speciesPath.push(speciesCategory);
                 }
             }
+
+            // Bandingkan filterPath dengan speciesPath
+            if (filterPath.length <= speciesPath.length) {
+                let isPrefix = true;
+                for (let i = 0; i < filterPath.length; i++) {
+                    if (filterPath[i] !== speciesPath[i]) {
+                        isPrefix = false;
+                        break;
+                    }
+                }
+                return isPrefix;
+            }
+
             return false;
         }
 
@@ -428,7 +450,6 @@
             const ul = document.createElement('ul');
             ul.className = `space-y-1 ${level > 0 ? 'ml-4 border-l border-gray-600 pl-2' : ''}`;
 
-            /* Ambil semua kunci (filum/kategori), urutkan secara alfabetis, lalu iterasi */
             Object.keys(data).sort().forEach(key => {
                 const li = document.createElement('li');
                 const fullPathSegment = [...currentPath, key];
@@ -436,27 +457,30 @@
 
                 let fontWeightClass = 'font-normal';
                 let iconClass = '';
-                let contentHTML = `<span>${displayKey}</span>`; // Default content
+                let contentHTML = `<span>${displayKey}</span>`;
 
-                if (key === "Semua Invertebrata") {
+                if (key === "Semua Invertebrata") { // Root
                     iconClass = 'fas fa-globe';
                     fontWeightClass = 'font-bold';
                 } else if (key === "Arthropoda") { // Kasus spesifik untuk Arthropoda (ikon folder)
                     iconClass = 'fas fa-folder';
                     fontWeightClass = 'font-bold';
                 } else if (typeof data[key] === 'object' && !Array.isArray(data[key])) {
-                    // Ini menangani objek/folder lain yang bukan "Arthropoda"
-                    // Contoh: Chelicerata, Myriapoda, Crustacea, Hexapoda
-                    iconClass = 'fas fa-users'; // Sesuai gambar untuk sub-folder ini
-                    fontWeightClass = 'font-semibold';
+                    // Ini menangani objek/folder lain yang merupakan induk taksonomi (misal: Chelicerata, Myriapoda, Crustacea, Hexapoda)
+                    iconClass = 'fas fa-folder'; // Ikon folder untuk semua node induk/cabang lainnya
+                    if (level === 0) { // Jika ini adalah Filum lain (selain Protozoa)
+                        fontWeightClass = 'font-bold';
+                    } else { // Jika ini adalah Subfilum
+                        fontWeightClass = 'font-semibold';
+                    }
                 } else if (Array.isArray(data[key])) {
-                    // Ini menangani kategori yang merupakan induk langsung dari array string (node daun)
+                    // Ini menangani kategori yang merupakan induk langsung dari array string (Filum yang langsung berisi Kelas)
                     // Contoh: Protozoa, Cnidaria, Echinodermata, Platyhelminthes, Annelida, Mollusca
-                    iconClass = 'fas fa-sitemap'; // Mengubah ke ikon sitemap untuk phylum
+                    iconClass = 'fas fa-sitemap'; // Ikon sitemap untuk filum yang langsung berisi kelas
                     fontWeightClass = 'font-bold';
                 } else {
-                    // Ini menangani node daun yang merupakan string langsung dalam struktur taxonomyData
-                    iconClass = 'fas fa-arrow-right'; // Sesuai gambar untuk semua node daun
+                    // Ini menangani node daun yang merupakan string langsung dalam struktur taxonomyData (misal Kelas)
+                    iconClass = 'fas fa-arrow-right'; // Ikon panah kanan untuk semua node daun
                     fontWeightClass = 'font-normal';
                 }
 
@@ -467,8 +491,8 @@
 
                 const navItemDiv = document.createElement('div');
                 navItemDiv.className = `nav-item cursor-pointer text-sm py-2 px-3 rounded-lg ${fontWeightClass}`;
-                navItemDiv.style.paddingLeft = `${0.5 + level * 1}rem`; /* Penyesuaian indentasi */
-                navItemDiv.innerHTML = `<i class="${iconClass} mr-2"></i> ${contentHTML}`; // Gunakan contentHTML di sini
+                navItemDiv.style.paddingLeft = `${0.5 + level * 1}rem`;
+                navItemDiv.innerHTML = `<i class="${iconClass} mr-2"></i> ${contentHTML}`;
                 navItemDiv.dataset.category = key;
 
 
@@ -478,7 +502,7 @@
                     filterAndRenderSpecies();
                     updateActiveTaxonomy(navItemDiv);
                     updateBreadcrumbs(fullPathSegment);
-                    updateSearchPlaceholder(); /* Panggil fungsi ini saat filter berubah */
+                    updateSearchPlaceholder();
                 });
 
                 li.appendChild(navItemDiv);
@@ -494,11 +518,12 @@
                         let subItemContentHTML = `<span>${subItemKey.replace(/_/g, ' ')}</span>`;
 
                         const subNavItemDiv = document.createElement('div');
-                        subNavItemDiv.className = `nav-item cursor-pointer text-xs py-1 px-3 rounded-lg`;
-                        subNavItemDiv.style.paddingLeft = `${0.5 + (level + 1) * 1}rem`; /* Penyesuaian indentasi */
+                        // Kelas-kelas di bawah filum seperti Protozoa, Cnidaria, dll.
+                        subNavItemDiv.className = `nav-item cursor-pointer text-xs py-1 px-3 rounded-lg font-normal`;
+                        subNavItemDiv.style.paddingLeft = `${0.5 + (level + 1) * 1}rem`;
 
                         // Ini untuk sub-item seperti Gastropoda di dalam Mollusca
-                        if (subItemKey === "Gastropoda" && subItemFullPathSegment.includes("Mollusca")) {
+                        if (subItemKey === "Gastropoda" && fullPathSegment.includes("Mollusca")) {
                             subItemContentHTML = `<span>${subItemKey.replace(/_/g, ' ')} <span class="new-label">NEW</span></span>`;
                         }
 
@@ -512,7 +537,7 @@
                             filterAndRenderSpecies();
                             updateActiveTaxonomy(subNavItemDiv);
                             updateBreadcrumbs(subItemFullPathSegment);
-                            updateSearchPlaceholder(); /* Panggil fungsi ini saat filter berubah */
+                            updateSearchPlaceholder();
                         });
                         subLi.appendChild(subNavItemDiv);
                         ul.appendChild(subLi);
@@ -616,16 +641,8 @@
         /* Fungsi untuk memfilter spesies berdasarkan kategori dan pencarian */
         function filterAndRenderSpecies() {
             let filteredSpecies = speciesData.filter(species => {
-                let passesCategoryFilter = false;
-
                 const fullTaxonomyRoot = taxonomyData["Semua Invertebrata"];
-
-                if (currentFilterCategory === "Semua Invertebrata") {
-                    passesCategoryFilter = true;
-                } else {
-                    passesCategoryFilter = isCategoryInSubtree(species.filum, currentFilterCategory, fullTaxonomyRoot) ||
-                        isCategoryInSubtree(species.category, currentFilterCategory, fullTaxonomyRoot);
-                }
+                let passesCategoryFilter = isCategoryInSubtree(species.filum, species.subFilum, species.category, currentFilterCategory, fullTaxonomyRoot);
 
                 const matchesSearch = species.name.toLowerCase().includes(currentSearchQuery.toLowerCase()) ||
                     species.scientificName.toLowerCase().includes(currentSearchQuery.toLowerCase());
@@ -694,7 +711,7 @@
                         currentPage = 1;
                         filterAndRenderSpecies();
                         updateBreadcrumbs(newFilterPath);
-                        updateSearchPlaceholder(); /* Panggil fungsi ini saat breadcrumb diklik */
+                        updateSearchPlaceholder();
                         const navItemToActivate = document.querySelector(`#taxonomy-nav .nav-item[data-category="${currentFilterCategory}"]`);
                         updateActiveTaxonomy(navItemToActivate);
                     });
@@ -713,47 +730,39 @@
 
         /* Initialize the app when DOM is loaded */
         document.addEventListener('DOMContentLoaded', () => {
-            taxonomyNav.innerHTML = ''; /* Clear existing content */
-            /* Render the full taxonomy, starting from the "Semua Invertebrata" root */
+            taxonomyNav.innerHTML = '';
             renderTaxonomy(taxonomyData, taxonomyNav);
 
-            /* --- LOGIKA PEMBACAAN SEARCH QUERY DARI sessionStorage --- */
             const storedSearchQuery = sessionStorage.getItem('globalSearchQuery');
             if (storedSearchQuery) {
-                searchInput.value = storedSearchQuery; /* Isi input pencarian */
-                currentSearchQuery = storedSearchQuery; /* Set currentSearchQuery */
-                sessionStorage.removeItem('globalSearchQuery'); /* Hapus dari sessionStorage setelah digunakan */
-                console.log('Search query loaded from sessionStorage:', storedSearchQuery);
+                searchInput.value = storedSearchQuery;
+                currentSearchQuery = storedSearchQuery;
+                sessionStorage.removeItem('globalSearchQuery');
             }
-            /* --- END LOGIKA PEMBACAAN SEARCH QUERY --- */
 
-            /* --- NEW LOGIC: Check URL for category to pre-select and scroll --- */
             const urlParams = new URLSearchParams(window.location.search);
-            const initialCategoryFromURL = urlParams.get('category'); /* e.g., index.html?category=Gastropoda */
+            const initialCategoryFromURL = urlParams.get('category');
 
             if (initialCategoryFromURL) {
                 currentFilterCategory = initialCategoryFromURL;
-                /* Find the element and activate it */
                 const navItemToActivate = document.querySelector(`.nav-item[data-category="${currentFilterCategory}"]`);
                 if (navItemToActivate) {
-                    updateActiveTaxonomy(navItemToActivate); /* This will add 'active' class and scroll */
+                    updateActiveTaxonomy(navItemToActivate);
                     const categoryPath = findCategoryPath(taxonomyData, currentFilterCategory, []);
                     if (categoryPath) {
-                        updateBreadcrumbs(categoryPath); /* Update breadcrumbs based on URL category */
+                        updateBreadcrumbs(categoryPath);
                     }
                 }
             } else {
-                /* If no category in URL, set initial active taxonomy item to "Semua Invertebrata" */
                 const initialActiveNav = document.querySelector(`.nav-item[data-category="${currentFilterCategory}"]`);
                 if (initialActiveNav) {
                     initialActiveNav.classList.add('active');
                 }
-                updateBreadcrumbs([currentFilterCategory]); /* Initial breadcrumbs */
+                updateBreadcrumbs([currentFilterCategory]);
             }
-            /* --- END NEW LOGIC --- */
 
-            filterAndRenderSpecies(); /* Initial render of species cards */
-            updateSearchPlaceholder(); /* Panggil fungsi ini saat inisialisasi awal */
+            filterAndRenderSpecies();
+            updateSearchPlaceholder();
         });
     </script>
 </body>
