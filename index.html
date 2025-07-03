@@ -438,30 +438,37 @@
                 let iconClass = '';
                 let contentHTML = `<span>${displayKey}</span>`; // Default content
 
-                if (level === 0 && key === "Semua Invertebrata") {
+                if (key === "Semua Invertebrata") {
                     iconClass = 'fas fa-globe';
                     fontWeightClass = 'font-bold';
-                } else if (typeof data[key] === 'object' && !Array.isArray(data[key])) {
+                } else if (key === "Arthropoda") { // Kasus spesifik untuk Arthropoda (ikon folder)
                     iconClass = 'fas fa-folder';
-                    if (level === 0) {
-                        fontWeightClass = 'font-bold';
-                    } else {
-                        fontWeightClass = 'font-semibold';
-                    }
+                    fontWeightClass = 'font-bold';
+                } else if (typeof data[key] === 'object' && !Array.isArray(data[key])) {
+                    // Ini menangani objek/folder lain yang bukan "Arthropoda"
+                    // Contoh: Chelicerata, Myriapoda, Crustacea, Hexapoda
+                    iconClass = 'fas fa-users'; // Sesuai gambar untuk sub-folder ini
+                    fontWeightClass = 'font-semibold';
+                } else if (Array.isArray(data[key])) {
+                    // Ini menangani kategori yang merupakan induk langsung dari array string (node daun)
+                    // Contoh: Protozoa, Cnidaria, Echinodermata, Platyhelminthes, Annelida, Mollusca
+                    iconClass = 'fas fa-sitemap'; // Mengubah ke ikon sitemap untuk phylum
+                    fontWeightClass = 'font-bold';
                 } else {
-                    iconClass = 'fas fa-arrow-right'; // Corrected icon as per image
+                    // Ini menangani node daun yang merupakan string langsung dalam struktur taxonomyData
+                    iconClass = 'fas fa-arrow-right'; // Sesuai gambar untuk semua node daun
                     fontWeightClass = 'font-normal';
+                }
 
-                    // Add "NEW" label specifically for Gastropoda under Mollusca
-                    if (key === "Gastropoda" && fullPathSegment.includes("Mollusca")) {
-                        contentHTML = `<span>${displayKey} <span class="new-label">NEW</span></span>`;
-                    }
+                // Tambahkan label "NEW" khusus untuk Gastropoda di bawah Mollusca
+                if (key === "Gastropoda" && fullPathSegment.includes("Mollusca")) {
+                    contentHTML = `<span>${displayKey} <span class="new-label">NEW</span></span>`;
                 }
 
                 const navItemDiv = document.createElement('div');
                 navItemDiv.className = `nav-item cursor-pointer text-sm py-2 px-3 rounded-lg ${fontWeightClass}`;
-                navItemDiv.style.paddingLeft = `${0.5 + level * 1}rem`; /* Adjusted indentation */
-                navItemDiv.innerHTML = `<i class="${iconClass} mr-2"></i> ${contentHTML}`; // Use contentHTML here
+                navItemDiv.style.paddingLeft = `${0.5 + level * 1}rem`; /* Penyesuaian indentasi */
+                navItemDiv.innerHTML = `<i class="${iconClass} mr-2"></i> ${contentHTML}`; // Gunakan contentHTML di sini
                 navItemDiv.dataset.category = key;
 
 
@@ -477,6 +484,7 @@
                 li.appendChild(navItemDiv);
                 ul.appendChild(li);
 
+                // Panggilan rekursif untuk sub-level
                 if (typeof data[key] === 'object' && !Array.isArray(data[key])) {
                     renderTaxonomy(data[key], li, level + 1, fullPathSegment);
                 } else if (Array.isArray(data[key])) {
@@ -487,13 +495,14 @@
 
                         const subNavItemDiv = document.createElement('div');
                         subNavItemDiv.className = `nav-item cursor-pointer text-xs py-1 px-3 rounded-lg`;
-                        subNavItemDiv.style.paddingLeft = `${0.5 + (level + 1) * 1}rem`; /* Adjusted indentation */
+                        subNavItemDiv.style.paddingLeft = `${0.5 + (level + 1) * 1}rem`; /* Penyesuaian indentasi */
 
-                        // This is for sub-items like Gastropoda within Mollusca
+                        // Ini untuk sub-item seperti Gastropoda di dalam Mollusca
                         if (subItemKey === "Gastropoda" && subItemFullPathSegment.includes("Mollusca")) {
                             subItemContentHTML = `<span>${subItemKey.replace(/_/g, ' ')} <span class="new-label">NEW</span></span>`;
                         }
 
+                        // Semua item langsung di bawah array harus fas fa-arrow-right
                         subNavItemDiv.innerHTML = `<i class="fas fa-arrow-right mr-2 text-xs"></i> ${subItemContentHTML}`;
                         subNavItemDiv.dataset.category = subItemKey;
 
